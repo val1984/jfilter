@@ -10,4 +10,4 @@ $gt, $lt, $le, $eq, $ne, $ge, $in, $nin, $size, $exist, $and, $or
 || $in || In || Collection, Array and Map||
 || $nin || Not in || Collection, Array and Map||
 
-All: All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte, `ByteBuffer`, Calendar, Character, `CharBuffer`, java.util.Date, `java.sql.DateDouble`, `DoubleBufferEnum`, File, Float, `FloatBuffer`, `GregorianCalendar`, `IntBuffer`, Integer, Long, `LongBuffer`, Rdn, Short, `ShortBuffer`, String, java.sql.Time, java.sql.Timestamp, URI, UUID
+*All*: All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte, `ByteBuffer`, Calendar, Character, `CharBuffer`, java.util.Date, `java.sql.DateDouble`, `DoubleBufferEnum`, File, Float, `FloatBuffer`, `GregorianCalendar`, `IntBuffer`, Integer, Long, `LongBuffer`, Rdn, Short, `ShortBuffer`, String, java.sql.Time, java.sql.Timestamp, URI, UUID
