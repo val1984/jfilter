@@ -1,5 +1,13 @@
 = JFilter supported operators =
+$gt, $lt, $le, $eq, $ne, $ge, $in, $nin, $size, $exist, $and, $or
 
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+|| *Operator* || *Description* || *Supported types* ||
+|| $gt || Greater than|| All ||
+|| $ge || Greater than equals to || All ||
+|| $lt || Less than || All ||
+|| $le || Less than equals to || All ||
+|| $eq || equals to || All ||
+|| $in || In || Collection, Array and Map||
+|| $nin || Not in || Collection, Array and Map||
+
+All: All primitives, BigDecimal, BigInteger, Boolean, Byte, ByteBuffer, Calendar, Character, CharBuffer, java.util.Date, java.sql.DateDouble, DoubleBufferEnum, File, Float, FloatBuffer, GregorianCalendar, IntBuffer, Integer, Long, LongBuffer, Rdn, Short, ShortBuffer, String, java.sql.Time, java.sql.Timestamp, URI, UUID
