@@ -1,13 +1,13 @@
 = JFilter supported operators =
 
 || *Operator* || *Description* || *Supported types* || *Comment* ||
-|| $gt || Greater than|| All ||
-|| $ge || Greater than equals to || All ||
-|| $lt || Less than || All ||
-|| $le || Less than equals to || All ||
-|| $eq || equals to || All ||
-|| $in || In || Collection, Array and Map||
-|| $nin || Not in || Collection, Array and Map||
+|| $gt || Greater than|| All || ||
+|| $ge || Greater than equals to || All || ||
+|| $lt || Less than || All || ||
+|| $le || Less than equals to || All || ||
+|| $eq || equals to || All || ||
+|| $in || In || Collection, Array and Map|| ||
+|| $nin || Not in || Collection, Array and Map|| ||
 || $and || AND || || used for join||
 || $or || OR || || used for join||
 
