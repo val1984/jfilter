@@ -2,9 +2,12 @@
 
 == Installation ==
  * Download latest JFilter version from download page.
- * Download jackson core and mapper jars from http://wiki.fasterxml.com/JacksonDownload.
+ * Download Jackson core and mapper jars of version 1.9.0+ from http://wiki.fasterxml.com/JacksonDownload.
  * Add JFilter and Jackson jars in you project class path.
 
+== Sample programs ==
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/product Product sample]
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/salesorder Sales order sample]
 == JFilter supported operators ==
 
 || *Operator* || *Description* || *Supported types* || *Comment* ||
