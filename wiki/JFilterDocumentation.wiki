@@ -8,6 +8,12 @@
 == Sample programs ==
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/product Product sample]
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/salesorder Sales order sample]
+
+== Bean requirements ==
+Java bean class must satisfied following conditions to be parsed successfully by JFilter.
+ * Bean should have getter method on a property that is specified in json filter string.
+ * java.util.Collection and Map type of properties should be parameterized. 
+
 == JFilter supported operators ==
 
 || *Operator* || *Description* || *Supported types* || *Comment* ||
