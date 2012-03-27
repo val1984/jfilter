@@ -1,6 +1,6 @@
 = JFilter Documentation =
 
-= JFilter supported operators =
+== JFilter supported operators ==
 
 || *Operator* || *Description* || *Supported types* || *Comment* ||
 || $gt || Greater than|| All || ||
