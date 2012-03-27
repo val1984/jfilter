@@ -24,7 +24,7 @@ public class JFilter<T> {
 		}
 	}
 
-	public List<T> filter(Collection<T> collection) {
+	public Collection<T> filter(Collection<T> collection) {
 		List<T> list = new ArrayList<T>();
 		for (T o : collection) {
 			if (filterExp.eval(o)) {
