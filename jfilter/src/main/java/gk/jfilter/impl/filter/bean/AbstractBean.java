@@ -61,6 +61,10 @@ public abstract class AbstractBean implements Bean {
 
 	@Override
 	public Bean getProperty(String propertyName) {
+		Bean bean = properties.get(propertyName);
+		if(bean==null) {
+			throw new JFilterException("Property: "+propertyName+" does not exist in the class: "+type);
+		}
 		return properties.get(propertyName);
 	}
 }
