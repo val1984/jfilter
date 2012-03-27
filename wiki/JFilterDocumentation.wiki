@@ -1,5 +1,10 @@
 = JFilter Documentation =
 
+== Installation ==
+* Download latest JFilter version from download page.
+* Download jackson core and mapper jars from http://wiki.fasterxml.com/JacksonDownload.
+* Add JFilter and Jackson jars in you project class path.
+
 == JFilter supported operators ==
 
 || *Operator* || *Description* || *Supported types* || *Comment* ||
