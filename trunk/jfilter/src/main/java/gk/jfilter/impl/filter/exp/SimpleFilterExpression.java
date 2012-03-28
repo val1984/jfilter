@@ -10,7 +10,6 @@ import java.util.Arrays;
 public class SimpleFilterExpression extends AbstractFilterExpression {
 
 	final private SimpleTypeComparator comparator = new SimpleTypeComparator();
-	/** Can be any operator */
 	private Operator operator;
 	/** for $in and $nin array of values otherwise single value. */
 	private Comparable<?>[] filterValues;

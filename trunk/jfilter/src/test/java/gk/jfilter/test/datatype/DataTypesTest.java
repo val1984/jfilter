@@ -71,7 +71,6 @@ public class DataTypesTest {
 		private java.util.Date javaUtilDateVar;
 		private java.sql.Date javaSqlDateVar;
 		private UUID uuid;
-		
 		public String getStringVar() {
 			return stringVar;
 		}
