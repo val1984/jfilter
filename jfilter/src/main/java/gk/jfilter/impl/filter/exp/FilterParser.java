@@ -14,8 +14,17 @@ import java.util.Map;
 
 public class FilterParser {
 	private static Json json = new JacksonJsonImpl();
+	private Bean bean;
 
-	public static FilterExpression parse(String jsonFilter, Bean bean) {
+	public FilterParser(Bean bean) {
+		this.bean = bean;
+	}
+
+	public FilterExpression parse(String jsonFilter) {
+		return parse(jsonFilter, null);
+	}
+
+	public FilterExpression parse(String jsonFilter, Map<String, ?> args) {
 		try {
 			Map<String, ?> filterMap = json.toMap(jsonFilter.getBytes());
 			String filterFirstKey = (String) filterMap.keySet().toArray()[0];
@@ -27,18 +36,18 @@ public class FilterParser {
 				exp = new AndFilterExpression(filterFirstKey, bean);
 			}
 
-			parseMap(filterMap, exp, bean);
+			parseMap(filterMap, args, exp, bean);
 			return exp;
 		} catch (Throwable e) {
 			throw new JFilterException("Filter parsing error.", e);
 		}
 	}
 
-	static FilterExpression parseMap(Map<String, ?> filterMap, FilterExpression exp, Bean bean) {
+	private FilterExpression parseMap(Map<String, ?> filterMap, Map<String, ?> args, FilterExpression exp, Bean bean) {
 
 		try {
 			for (Map.Entry<String, ?> filterMapEntry : filterMap.entrySet()) {
-				exp.addExpression(parseKey(filterMapEntry, bean));
+				exp.addExpression(parseKey(filterMapEntry, args, bean));
 			}
 		} catch (Throwable e) {
 			throw new JFilterException("Filter parsing error.", e);
@@ -54,10 +63,10 @@ public class FilterParser {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private static FilterExpression parseKey(final Map.Entry<String, ?> filterMapEntry, Bean bean) {
+	private FilterExpression parseKey(final Map.Entry<String, ?> filterMapEntry, Map<String, ?> args, Bean bean) {
 
 		String filterKey = filterMapEntry.getKey();
-		
+
 		Object filterValue = filterMapEntry.getValue();
 
 		/** e.g. {a:"v"} */
@@ -66,12 +75,12 @@ public class FilterParser {
 			FilterExpression exp;
 			if (filterKeyBean instanceof CollectionBean) {
 				exp = new CollectionFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(filterValue), Operator.$eq, filterKeyBean));
+				exp.addExpression(new SimpleFilterExpression("get", toArrays(filterValue, args), Operator.$eq, filterKeyBean));
 			} else if (filterKeyBean instanceof ArrayBean) {
 				exp = new ArrayFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(filterValue), Operator.$eq, filterKeyBean));
+				exp.addExpression(new SimpleFilterExpression("get", toArrays(filterValue, args), Operator.$eq, filterKeyBean));
 			} else {
-				exp = new SimpleFilterExpression(filterKey, toArrays(filterValue), Operator.$eq, bean);
+				exp = new SimpleFilterExpression(filterKey, toArrays(filterValue, args), Operator.$eq, bean);
 			}
 			return exp;
 		}
@@ -79,7 +88,7 @@ public class FilterParser {
 		/** e.g {a:{$gt:"10"}} , {a:{$in:[1,2,3]}} */
 		if ((filterValue instanceof Map) && (containsOperator((Map<String, ?>) filterValue))) {
 			Bean filterKeyBean = bean.getProperty(filterKey);
-			
+
 			Map<String, ?> valueMap = (Map<String, ?>) filterValue;
 			String s = (String) valueMap.keySet().toArray()[0];
 			Operator operator = Operator.operatorOf(s);
@@ -87,22 +96,21 @@ public class FilterParser {
 			FilterExpression exp;
 			if (filterKeyBean instanceof CollectionBean) {
 				exp = new CollectionFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(valueMap.get(s)), operator, filterKeyBean));
+				exp.addExpression(new SimpleFilterExpression("get", toArrays(valueMap.get(s), args), operator, filterKeyBean));
 			} else if (filterKeyBean instanceof ArrayBean) {
 				exp = new ArrayFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(valueMap.get(s)), operator, filterKeyBean));
+				exp.addExpression(new SimpleFilterExpression("get", toArrays(valueMap.get(s), args), operator, filterKeyBean));
 			} else {
-				exp = new SimpleFilterExpression(filterKey, toArrays(valueMap.get(s)), operator, bean);
+				exp = new SimpleFilterExpression(filterKey, toArrays(valueMap.get(s), args), operator, bean);
 			}
-			
+
 			return exp;
 		}
 
 		/** e.g. {$and:[{a:"v1"}, {b:"v2}]} */
 		if (filterValue instanceof Collection) {
 			if (!Operator.isJoin(filterKey)) {
-				throw new JFilterException(" $and or $or expected. with collection of expressions: "
-						+ filterValue);
+				throw new JFilterException(" $and or $or expected. with collection of expressions: " + filterValue);
 			}
 
 			FilterExpression exp;
@@ -116,7 +124,7 @@ public class FilterParser {
 			}
 
 			for (Object filterMap : (Collection<?>) filterValue) {
-				parseMap((Map<String, Object>) filterMap, exp, bean);
+				parseMap((Map<String, Object>) filterMap, args, exp, bean);
 			}
 			return exp;
 		}
@@ -140,14 +148,14 @@ public class FilterParser {
 				throw new JFilterException("Unknow filter parsing error.");
 			}
 
-			parseMap((Map<String, Object>) filterValue, exp, filterKeyBean);
+			parseMap((Map<String, Object>) filterValue, args, exp, filterKeyBean);
 			return exp;
 		}
 
 		throw new JFilterException("Unknow filter parsing error.");
 	}
 
-	private static boolean containsOperator(final Map<String, ?> filterMap) {
+	private boolean containsOperator(final Map<String, ?> filterMap) {
 		for (String key : filterMap.keySet()) {
 			if (Operator.isComparator(key)) {
 				return true;
@@ -155,12 +163,27 @@ public class FilterParser {
 		}
 		return false;
 	}
-	
-	private static Object[]  toArrays(Object object) {
-		if(object instanceof Collection) {
+
+	private Object[] toArrays(Object object, Map<String, ?> args) {
+		if (object instanceof Collection) {
 			return ((Collection<?>) object).toArray();
+		} else {
+			String s = (String) object;
+			if (s.startsWith("?")) {
+				Object o = args.get(s.substring(1));
+				if (o == null) {
+					throw new JFilterException("Filter argument [" + s + "] value not given the the argument Map [" + args + "]");
+				}
+				if (o instanceof Collection) {
+					return ((Collection<?>) o).toArray();
+				} else {
+					return new Object[] { o };
+				}
+			} else {
+				return new Object[] { s };
+			}
 		}
-		
-		return new Object[] { object };
+
 	}
+
 }
