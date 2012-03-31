@@ -4,7 +4,9 @@ import gk.jfilter.JFilter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -31,7 +33,10 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{\"code\":\"5\"}");
+		//Collection<Product> fp = filter.execute("{\"code\":\"5\"}");
+		Map<String, Integer> args = new HashMap<String, Integer>(1);
+		args.put("code", 5);
+		Collection<Product> fp = filter.execute("{\"code\":\"?code\"}", args);
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
