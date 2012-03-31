@@ -30,36 +30,36 @@ public class DataTypesTest {
 
 	@Test
 	public void testString() {
-		JFilter<Dummy> filter = new JFilter<Dummy>("{\"stringVar\":\"string\"}", Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.filter(dummies));
+		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"stringVar\":\"string\"}"));
 		assertEquals(fdummies.get(0).getStringVar(), "string");
 	}
 	
 	@Test
 	public void testEnum() {
-		JFilter<Dummy> filter = new JFilter<Dummy>("{\"enumVar\":\"$and\"}", Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.filter(dummies));
+		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"enumVar\":\"$and\"}"));
 		assertEquals(fdummies.get(0).getEnumVar(), Operator.$and);
 	}
 	
 	@Test
 	public void testJavaUtilDate() {
-		JFilter<Dummy> filter = new JFilter<Dummy>("{\"javaUtilDateVar\":{\"$gt\":\"2011-12-23\"}}", Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.filter(dummies));
+		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"javaUtilDateVar\":{\"$gt\":\"2011-12-23\"}}"));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 	
 	@Test
 	public void testJavaSqlDate() {
-		JFilter<Dummy> filter = new JFilter<Dummy>("{\"javaSqlDateVar\":{\"$gt\":\"2011-12-23\"}}", Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.filter(dummies));
+		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"javaSqlDateVar\":{\"$gt\":\"2011-12-23\"}}"));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 	
 	@Test
 	public void testUuid() {
-		JFilter<Dummy> filter = new JFilter<Dummy>("{\"uuid\":\""+uuid.toString()+"\"}", Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.filter(dummies));
+		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"uuid\":\""+uuid.toString()+"\"}"));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 

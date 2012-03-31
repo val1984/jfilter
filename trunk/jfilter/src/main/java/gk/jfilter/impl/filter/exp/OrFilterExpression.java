@@ -1,14 +1,12 @@
 package gk.jfilter.impl.filter.exp;
 
-import java.util.Collection;
-
 import gk.jfilter.impl.filter.bean.Bean;
 
 public class OrFilterExpression extends AbstractFilterExpression {
 
 	OrFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
-		this.bean = bean.getProperty(filterKey);
+		this.bean = bean;
 	}
 
 	public boolean eval(Object object) {
