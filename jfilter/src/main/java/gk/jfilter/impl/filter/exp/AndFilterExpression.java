@@ -6,6 +6,7 @@ public class AndFilterExpression extends AbstractFilterExpression {
 
 	AndFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
+		this.bean=bean;
 	}
 
 	public boolean eval(Object object) {

@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String args[]) {
 		long stime = System.currentTimeMillis();
 
-		for (int i = 0; i < 100000; ++i) {
+		for (int i = 0; i < 10000; ++i) {
 
 			SalesOrder salesOrder = new SalesOrder();
 			salesOrder.setId(i);
@@ -90,10 +90,10 @@ public class Main {
 	 * Filter SalesOrder collection where SalesOrder id less than equals to 10.
 	 */
 	public static void filter1() {
-		JFilter<SalesOrder> filter = new JFilter<SalesOrder>("{ \"id\":{\"$le\":\"10\"}}", SalesOrder.class);
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.filter(orders);
+		Collection<SalesOrder> fc = filter.execute("{ \"id\":{\"$le\":\"10\"}}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -106,9 +106,9 @@ public class Main {
 	 * Filter SalesOrder collection where SalesOrder id in 0 and 100.
 	 */
 	public static void filter2() {
-		JFilter<SalesOrder> filter = new JFilter<SalesOrder>("{ \"id\": {\"$in\":[\"0\", \"100\"]}}", SalesOrder.class);
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.filter(orders);
+		Collection<SalesOrder> fc = filter.execute("{ \"id\": {\"$in\":[\"0\", \"100\"]}}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -122,9 +122,9 @@ public class Main {
 	 * LineItem object has lineAmount equals to 1.
 	 */
 	public static void filter3() {
-		JFilter<SalesOrder> filter = new JFilter<SalesOrder>("{\"lineItems\":{\"lineAmount\":\"1\"}}", SalesOrder.class);
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.filter(orders);
+		Collection<SalesOrder> fc = filter.execute("{\"lineItems\":{\"lineAmount\":\"1\"}}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -138,11 +138,10 @@ public class Main {
 	 * city id DEL.
 	 */
 	public static void filter4() {
-		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(
-				"{ \"$and\":[{\"id\": \"0\"}, {\"billingAddress\":{\"city\":\"DEL\"}}]}", SalesOrder.class);
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.filter(orders);
+		Collection<SalesOrder> fc = filter.execute("{ \"$and\":[{\"id\": \"0\"}, {\"billingAddress\":{\"city\":\"DEL\"}}]}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -156,11 +155,10 @@ public class Main {
 	 * lines array is equal to line3.
 	 */
 	public static void filter5() {
-		JFilter<SalesOrder> filter = new JFilter<SalesOrder>("{\"billingAddress\":{\"lines\":\"line3\"}}",
-				SalesOrder.class);
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.filter(orders);
+		Collection<SalesOrder> fc = filter.execute("{\"billingAddress\":{\"lines\":\"line3\"}}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -174,11 +172,10 @@ public class Main {
 	 * collection's any of the LineItem object has lineAmount equals to 10.
 	 */
 	public static void filter6() {
-		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(
-				"{ \"$and\":[{\"id\": \"0\"}, {\"lineItems\":{\"lineAmount\":\"10\"}}]}", SalesOrder.class);
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.filter(orders);
+		Collection<SalesOrder> fc = filter.execute("{ \"$and\":[{\"id\": \"0\"}, {\"lineItems\":{\"lineAmount\":\"10\"}}]}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -193,12 +190,10 @@ public class Main {
 	 * value object is greater than 1.01.
 	 */
 	public static void filter7() {
-		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(
-				"{\"lineItems\":{\"taxes\":{ \"key\":{\"code\":\"GST\"}, \"value\":{\"$gt\": \"1.01\"}}}}",
-				SalesOrder.class);
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.filter(orders);
+		Collection<SalesOrder> fc = filter.execute("{\"lineItems\":{\"taxes\":{ \"key\":{\"code\":\"GST\"}, \"value\":{\"$gt\": \"1.01\"}}}}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);

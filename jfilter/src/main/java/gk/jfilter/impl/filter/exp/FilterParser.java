@@ -57,11 +57,12 @@ public class FilterParser {
 	private static FilterExpression parseKey(final Map.Entry<String, ?> filterMapEntry, Bean bean) {
 
 		String filterKey = filterMapEntry.getKey();
-		Bean filterKeyBean = bean.getProperty(filterKey);
+		
 		Object filterValue = filterMapEntry.getValue();
 
 		/** e.g. {a:"v"} */
 		if (filterValue instanceof String) {
+			Bean filterKeyBean = bean.getProperty(filterKey);
 			FilterExpression exp;
 			if (filterKeyBean instanceof CollectionBean) {
 				exp = new CollectionFilterExpression(filterKey, bean);
@@ -77,7 +78,8 @@ public class FilterParser {
 
 		/** e.g {a:{$gt:"10"}} , {a:{$in:[1,2,3]}} */
 		if ((filterValue instanceof Map) && (containsOperator((Map<String, ?>) filterValue))) {
-
+			Bean filterKeyBean = bean.getProperty(filterKey);
+			
 			Map<String, ?> valueMap = (Map<String, ?>) filterValue;
 			String s = (String) valueMap.keySet().toArray()[0];
 			Operator operator = Operator.operatorOf(s);
@@ -121,6 +123,7 @@ public class FilterParser {
 
 		/** e.g. {a:{b:"v1", c:"v2"}} */
 		if (filterValue instanceof Map) {
+			Bean filterKeyBean = bean.getProperty(filterKey);
 			FilterExpression exp;
 			if (filterKeyBean instanceof CollectionBean) {
 				/** for properties which returns Collection objects */
