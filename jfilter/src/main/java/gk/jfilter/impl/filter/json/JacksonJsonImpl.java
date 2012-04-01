@@ -8,12 +8,17 @@ import java.util.Map;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 public class JacksonJsonImpl implements Json {
 	final private static ObjectMapper mapper = new ObjectMapper();
-
+	
+	static {
+		mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+	}
+	
 	public <T> byte[] toJson(T t) {
 		try {
 			return mapper.writeValueAsBytes(t);
