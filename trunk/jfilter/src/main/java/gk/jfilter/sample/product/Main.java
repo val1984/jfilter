@@ -36,7 +36,7 @@ public class Main {
 		//Collection<Product> fp = filter.execute("{\"code\":\"5\"}");
 		Map<String, Integer> args = new HashMap<String, Integer>(1);
 		args.put("code", 5);
-		Collection<Product> fp = filter.execute("{\"code\":\"?code\"}", args);
+		Collection<Product> fp = filter.execute("{'code':'?code'}", args);
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
@@ -49,7 +49,7 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{\"code\": {\"$in\":[\"5\", \"10\", \"100\"]}}");
+		Collection<Product> fp = filter.execute("{'code': {'$in':['5', '10', '100']}}");
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
@@ -65,7 +65,7 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{ \"$or\":[{\"code\": \"5\"}, {\"skus\": {\"price\":{\"$le\":\"60\"}}}]}");
+		Collection<Product> fp = filter.execute("{ '$or':[{'code': '5'}, {'skus': {'price':{'$le':'60'}}}]}");
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
@@ -81,7 +81,7 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{ \"$or\":[{\"skus\": { \"$or\": [{\"price\":\"500\"}, {\"price\":{\"$le\":\"60\"}}]}}]}");
+		Collection<Product> fp = filter.execute("{ '$or':[{'skus': { '$or': [{'price':'500'}, {'price':{'$le':'60'}}]}}]}");
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
@@ -97,7 +97,7 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{\"skus\": {\"$and\":[{\"price\":{\"$in\":[\"20\", \"40\"]}}, {\"code\":\"RedApple\"}]}}");
+		Collection<Product> fp = filter.execute("{'skus': {'$and':[{'price':{'$in':['20', '40']}}, {'code':'RedApple'}]}}");
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
@@ -114,7 +114,7 @@ public class Main {
 
 		long stime = System.currentTimeMillis();
 		Collection<Product> fp = filter
-				.execute("{\"$or\":[{\"code\":\"10\"},{\"skus\": {\"$and\":[{\"price\":{\"$in\":[\"20\", \"40\"]}}, {\"code\":\"RedApple\"}]}}]}");
+				.execute("{'$or':[{'code':'10'},{'skus': {'$and':[{'price':{'$in':['20', '40']}}, {'code':'RedApple'}]}}]}");
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
