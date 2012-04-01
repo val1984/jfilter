@@ -14,7 +14,7 @@ Java bean class must satisfied following conditions to be parsed successfully by
  * Bean should have getter method on a property that is specified in json filter string.
  * java.util.Collection and Map type of properties should be parameterized. 
 
-== JFilter supported operators ==
+== Supported operators ==
 
 || *Operator* || *Description* || *Supported types* || *Comment* ||
 || $gt || Greater than|| All || ||
@@ -28,3 +28,16 @@ Java bean class must satisfied following conditions to be parsed successfully by
 || $or || OR || || used for join||
 
 *All*: All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte, `ByteBuffer`, Calendar, Character, `CharBuffer`, java.util.Date, `java.sql.DateDouble`, `DoubleBufferEnum`, File, Float, `FloatBuffer`, `GregorianCalendar`, `IntBuffer`, Integer, Long, `LongBuffer`, Rdn, Short, `ShortBuffer`, String, java.sql.Time, java.sql.Timestamp, URI, UUID
+
+== Parameterized filters ==
+
+Parameterized filters are when you do not specify attributes value in json filter string for example {'id':'?id'}. Question mark is used to indicate that value will be given separately. JFilter class provide two method to execute filters one for non parameterized filter and another for executing parameterized filters.
+Filter parameters are given in key value form where key is string given in filter in "?string" format and value is object of matching property class of collection bean. $in and $nin values are given as List. 
+
+Example:
+{{{
+JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
+Map<String, Integer> parameters = new HashMap<String, Integer>(1);
+parameters.put("id", 10);
+Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?id'}}", parameters);
+}}}
