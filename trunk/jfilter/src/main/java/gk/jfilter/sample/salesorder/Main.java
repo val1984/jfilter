@@ -78,6 +78,7 @@ public class Main {
 		/** call filters */
 
 		filter1();
+		filter11();
 		filter2();
 		filter3();
 		filter4();
@@ -94,6 +95,24 @@ public class Main {
 
 		long stime = System.currentTimeMillis();
 		Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'10'}}");
+		long etime = System.currentTimeMillis();
+		for (SalesOrder o : fc) {
+			System.out.println(o);
+		}
+
+		System.out.println("Filter Time:" + (etime - stime));
+	}
+	
+	/**
+	 * Parameterized filter example where SalesOrder id less than equals to 10.
+	 */
+	public static void filter11() {
+		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
+
+		long stime = System.currentTimeMillis();
+		Map<String, Integer> parameters = new HashMap<String, Integer>(1);
+		parameters.put("id", 10);
+		Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?id'}}", parameters);
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);

@@ -7,7 +7,9 @@ import gk.jfilter.impl.filter.exp.FilterParser;
 
 import java.beans.IntrospectionException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,16 +21,18 @@ import java.util.Map;
  * Following are different ways to execute filter.
  * 
  * Collection<Pet> pets = new ArrayList<Pet>(); JFilter jfilter = new
- * JFilter(pets, Pet.class); Collection<Pet> cats = filter.execute("{\"type\":\"CAT\"}");
+ * JFilter(pets, Pet.class); Collection<Pet> cats =
+ * filter.execute("{'type':'CAT'}");
  * 
  * Collection<Pet> pets = new ArrayList<Pet>(); JFilter jfilter = new
- * JFilter(pets, Pet.class); Map<String, ?> args = new HashMap<String,String>();
+ * JFilter(pets, Pet.class); Map<String, ?> parameters = new
+ * HashMap<String,String>();
  * 
- * args.put("type", "CAT"); 
- * Collection<Pet> cats = jfilter.execute("{\"type\":\"?type\"}", args);
+ * parameters.put("type", "CAT"); Collection<Pet> cats =
+ * jfilter.execute("{'type':'?type'}", args);
  * 
- * args.put("type", "DOG"); 
- * Collection<Pet> dogs = jfilter.execute("{\"type\":\"?type\"}", args);
+ * parameters.put("type", "DOG"); Collection<Pet> dogs =
+ * jfilter.execute("{'type':'?type'}", args);
  * 
  * @author Kamran Ali Khan (khankamranali@gmail.com)
  * 
@@ -36,28 +40,70 @@ import java.util.Map;
 public class JFilter<T> {
 	private Bean bean;
 	private FilterExpression filterExp;
-	private Collection<T> collection;
 	private FilterParser filterParser;
+
+	/** Supported collection types */
+	private Iterator<T> itr;
 
 	/**
 	 * 
 	 * @param collection
-	 *            collection object to be filtered.
+	 *            collection to be filtered.
 	 * @param klass
 	 *            collection parameterized class object.
 	 */
 	public JFilter(Collection<T> collection, Class<T> klass) {
+		init(klass);
+		itr = collection.iterator();
+	}
+
+	/**
+	 * 
+	 * @param array
+	 *            array to be filtered.
+	 * @param klass
+	 *            array type.
+	 */
+	public JFilter(T[] array, Class<T> klass) {
+		init(klass);
+		itr = Arrays.asList(array).iterator();
+	}
+
+	/**
+	 * 
+	 * @param map
+	 *            values of Map are filtered.
+	 * @param klass
+	 *            array type.
+	 */
+	public JFilter(Map<?, T> map, Class<T> klass) {
+		init(klass);
+		map.values().iterator();
+	}
+
+	/**
+	 * 
+	 * @param itr
+	 *            Iterator of collection to be filtered.
+	 * @param klass
+	 *            array type.
+	 */
+	public JFilter(Iterator<T> itr, Class<T> klass) {
+		init(klass);
+		this.itr=itr;
+	}
+	
+	private void init(Class<T> klass) {
 		try {
 			this.bean = new QueryBean(klass);
 			this.filterParser = new FilterParser(bean);
-			this.collection = collection;
 		} catch (IntrospectionException e) {
 			throw new JFilterException("Unable to introspect the bean class.");
 		}
 	}
 
 	/**
-	 * Executes the filter.
+	 * Executes non parameterized filter.
 	 * 
 	 * @param jsonFilter
 	 *            filter in json format.
@@ -65,32 +111,31 @@ public class JFilter<T> {
 	 */
 	public Collection<T> execute(String jsonFilter) {
 		this.filterExp = filterParser.parse(jsonFilter);
-
-		List<T> list = new ArrayList<T>();
-		for (T o : collection) {
-			if (filterExp.eval(o)) {
-				list.add(o);
-			}
-		}
-		return list;
+		return execute();
 	}
 
 	/**
-	 * Executes the filter.
+	 * Executes parameterized filter.
 	 * 
-	 * @param jsonFilter
+	 * @param filter
 	 *            filter in json format.
-	 * @param args
-	 *            filter arguments. Arguments are given in key value form where
-	 *            key is string given in filter in "?string" format and value is
-	 *            object of matching property class of collection bean. $in and $nin values are given as List.
+	 * @param parameters
+	 *            filter parameters are given in key value form where key is
+	 *            string given in filter in "?string" format and value is object
+	 *            of matching property class of collection bean. $in and $nin
+	 *            values are given as List.
 	 * @return filtered collection.
 	 */
-	public Collection<T> execute(String jsonFilter, Map<String, ?> args) {
-		this.filterExp = filterParser.parse(jsonFilter, args);
+	public Collection<T> execute(String filter, Map<String, ?> parameters) {
+		this.filterExp = filterParser.parse(filter, parameters);
+		return execute();
+	}
 
+	private Collection<T> execute() {
 		List<T> list = new ArrayList<T>();
-		for (T o : collection) {
+
+		while (itr.hasNext()) {
+			T o = itr.next();
 			if (filterExp.eval(o)) {
 				list.add(o);
 			}
