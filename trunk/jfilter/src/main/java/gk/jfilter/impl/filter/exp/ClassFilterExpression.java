@@ -6,19 +6,17 @@ public class ClassFilterExpression extends AbstractFilterExpression {
 
 	ClassFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
-		this.bean = bean.getProperty(filterKey);
+		this.bean = bean;
 	}
 
 	public boolean eval(Object object) {
+		Object o = bean.getValue(object);
 		for (FilterExpression exp : expressions) {
-			if (exp.eval(exp.getBeanPropertyValue(object)) == false) {
+			if (exp.eval(o) == false) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public Object getBeanPropertyValue(Object object) {
-		return bean.getValue(object);
-	}
 }

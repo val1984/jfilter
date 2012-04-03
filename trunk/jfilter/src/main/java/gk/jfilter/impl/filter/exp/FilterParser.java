@@ -9,6 +9,7 @@ import gk.jfilter.impl.filter.bean.MapBean;
 import gk.jfilter.impl.filter.json.JacksonJsonImpl;
 import gk.jfilter.impl.filter.json.Json;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class FilterParser {
 		return parse(jsonFilter, null);
 	}
 
-	public FilterExpression parse(String jsonFilter, Map<String, ?> args) {
+	public FilterExpression parse(String jsonFilter, Map<String, ?> parameters) {
 		try {
 			Map<String, ?> filterMap = json.toMap(jsonFilter.getBytes());
 			String filterFirstKey = (String) filterMap.keySet().toArray()[0];
@@ -36,24 +37,21 @@ public class FilterParser {
 				exp = new AndFilterExpression(filterFirstKey, bean);
 			}
 
-			parseMap(filterMap, args, exp, bean);
+			parseMap(filterMap, parameters, exp, bean);
 			return exp;
 		} catch (Throwable e) {
 			throw new JFilterException("Filter parsing error.", e);
 		}
 	}
 
-	private FilterExpression parseMap(Map<String, ?> filterMap, Map<String, ?> args, FilterExpression exp, Bean bean) {
-
+	private void parseMap(Map<String, ?> filterMap, Map<String, ?> parameters, FilterExpression exp, Bean bean) {
 		try {
 			for (Map.Entry<String, ?> filterMapEntry : filterMap.entrySet()) {
-				exp.addExpression(parseKey(filterMapEntry, args, bean));
+				parseKey(filterMapEntry, parameters, exp, bean);
 			}
 		} catch (Throwable e) {
 			throw new JFilterException("Filter parsing error.", e);
 		}
-
-		return exp;
 	}
 
 	/**
@@ -63,48 +61,35 @@ public class FilterParser {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private FilterExpression parseKey(final Map.Entry<String, ?> filterMapEntry, Map<String, ?> args, Bean bean) {
-
-		String filterKey = filterMapEntry.getKey();
-
+	private void parseKey(final Map.Entry<String, ?> filterMapEntry, Map<String, ?> parameters, FilterExpression exp, Bean bean) {
+		String[] filterKeys = filterMapEntry.getKey().split("\\.");
+		String filterKey = null;
+		if(filterKeys.length>1) {
+			//last
+			filterKey = filterKeys[filterKeys.length-1];
+			//except last
+			exp = parseDots(Arrays.copyOfRange(filterKeys, 0, filterKeys.length-1), exp, bean);
+			bean=exp.getBean();
+		} else {
+			filterKey = filterMapEntry.getKey();
+		}
+		
 		Object filterValue = filterMapEntry.getValue();
 
 		/** e.g. {a:"v"} */
 		if (filterValue instanceof String) {
-			Bean filterKeyBean = bean.getProperty(filterKey);
-			FilterExpression exp;
-			if (filterKeyBean instanceof CollectionBean) {
-				exp = new CollectionFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(filterValue, args), Operator.$eq, filterKeyBean));
-			} else if (filterKeyBean instanceof ArrayBean) {
-				exp = new ArrayFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(filterValue, args), Operator.$eq, filterKeyBean));
-			} else {
-				exp = new SimpleFilterExpression(filterKey, toArrays(filterValue, args), Operator.$eq, bean);
-			}
-			return exp;
+			parseProperty(filterKey, toArrays(filterValue, parameters), Operator.$eq, exp, bean);
+			return;
 		}
 
 		/** e.g {a:{$gt:"10"}} , {a:{$in:[1,2,3]}} */
 		if ((filterValue instanceof Map) && (containsOperator((Map<String, ?>) filterValue))) {
-			Bean filterKeyBean = bean.getProperty(filterKey);
-
 			Map<String, ?> valueMap = (Map<String, ?>) filterValue;
 			String s = (String) valueMap.keySet().toArray()[0];
 			Operator operator = Operator.operatorOf(s);
-
-			FilterExpression exp;
-			if (filterKeyBean instanceof CollectionBean) {
-				exp = new CollectionFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(valueMap.get(s), args), operator, filterKeyBean));
-			} else if (filterKeyBean instanceof ArrayBean) {
-				exp = new ArrayFilterExpression(filterKey, bean);
-				exp.addExpression(new SimpleFilterExpression("get", toArrays(valueMap.get(s), args), operator, filterKeyBean));
-			} else {
-				exp = new SimpleFilterExpression(filterKey, toArrays(valueMap.get(s), args), operator, bean);
-			}
-
-			return exp;
+			
+			parseProperty(filterKey, toArrays(valueMap.get(s), parameters), operator, exp, bean);
+			return;
 		}
 
 		/** e.g. {$and:[{a:"v1"}, {b:"v2}]} */
@@ -112,47 +97,108 @@ public class FilterParser {
 			if (!Operator.isJoin(filterKey)) {
 				throw new JFilterException(" $and or $or expected. with collection of expressions: " + filterValue);
 			}
-
-			FilterExpression exp;
-			Operator operator = Operator.operatorOf(filterKey);
-			if (operator == Operator.$and) {
-				exp = new AndFilterExpression(filterKey, bean);
-			} else if (operator == Operator.$or) {
-				exp = new OrFilterExpression(filterKey, bean);
-			} else {
-				throw new JFilterException(" Join operator not supported: " + operator);
-			}
-
-			for (Object filterMap : (Collection<?>) filterValue) {
-				parseMap((Map<String, Object>) filterMap, args, exp, bean);
-			}
-			return exp;
+			parseCollection(filterKey, (Collection<Map<String, ?>>) filterValue, parameters, exp, bean);
+			return;
 		}
 
 		/** e.g. {a:{b:"v1", c:"v2"}} */
 		if (filterValue instanceof Map) {
-			Bean filterKeyBean = bean.getProperty(filterKey);
-			FilterExpression exp;
-			if (filterKeyBean instanceof CollectionBean) {
-				/** for properties which returns Collection objects */
-				exp = new CollectionFilterExpression(filterKey, bean);
-			} else if (filterKeyBean instanceof ArrayBean) {
-				/** for properties which returns Array objects */
-				exp = new ArrayFilterExpression(filterKey, bean);
-			} else if (filterKeyBean instanceof MapBean) {
-				/** for properties which returns Map objects */
-				exp = new MapFilterExpression(filterKey, bean);
-			} else if (filterKeyBean instanceof ClassBean) {
-				exp = new ClassFilterExpression(filterKey, bean);
-			} else {
-				throw new JFilterException("Unknow filter parsing error.");
-			}
-
-			parseMap((Map<String, Object>) filterValue, args, exp, filterKeyBean);
-			return exp;
+			parseClass(filterKey, (Map<String, ?>) filterValue, parameters, exp, bean);
+			return;
 		}
 
 		throw new JFilterException("Unknow filter parsing error.");
+	}
+
+	private void parseProperty(String filterKey, Object[] filterValues, Operator operator, FilterExpression exp, Bean bean) {
+		Bean filterKeyBean = bean.getProperty(filterKey);
+		FilterExpression nextExp;
+		/** for collection and array of simple parameterized type */
+		if (filterKeyBean instanceof CollectionBean) {
+			nextExp = new CollectionFilterExpression(filterKey, filterKeyBean);
+			nextExp.addExpression(new SimpleFilterExpression("get", filterValues, operator, filterKeyBean.getProperty("get")));
+		} else if (filterKeyBean instanceof ArrayBean) {
+			nextExp = new ArrayFilterExpression(filterKey, filterKeyBean);
+			nextExp.addExpression(new SimpleFilterExpression("get", filterValues, operator, filterKeyBean.getProperty("get")));
+		} else {
+			nextExp = new SimpleFilterExpression(filterKey, filterValues, operator, filterKeyBean);
+		}
+		exp.addExpression(nextExp);
+	}
+	
+	private void parseCollection(String filterKey, Collection<Map<String, ?>> filterValue, Map<String,?> parameters, FilterExpression exp, Bean bean) {
+		FilterExpression nextExp;
+		Operator operator = Operator.operatorOf(filterKey);
+		if (operator == Operator.$and) {
+			nextExp = new AndFilterExpression(filterKey, bean);
+		} else if (operator == Operator.$or) {
+			nextExp = new OrFilterExpression(filterKey, bean);
+		} else {
+			throw new JFilterException(" Join operator not supported: " + operator);
+		}
+
+		for (Map<String, ?> filterMap : filterValue) {
+			parseMap(filterMap, parameters, nextExp, bean);
+		}
+		exp.addExpression(nextExp);
+	}
+	
+	private void parseClass(String filterKey, Map<String,?> filterValue, Map<String,?> parameters, FilterExpression exp, Bean bean) {
+		Bean filterKeyBean = bean.getProperty(filterKey);
+		FilterExpression nextExp;
+		
+		if (filterKeyBean instanceof CollectionBean) {
+			/** for properties which returns Collection objects */
+			nextExp = new CollectionFilterExpression(filterKey, filterKeyBean);
+		} else if (filterKeyBean instanceof ArrayBean) {
+			/** for properties which returns Array objects */
+			nextExp = new ArrayFilterExpression(filterKey, filterKeyBean);
+		} else if (filterKeyBean instanceof MapBean) {
+			/** for properties which returns Map objects */
+			nextExp = new MapFilterExpression(filterKey, filterKeyBean);
+		} else if (filterKeyBean instanceof ClassBean) {
+			nextExp = new ClassFilterExpression(filterKey, filterKeyBean);
+		} else {
+			throw new JFilterException("Unknow filter parsing error.");
+		}
+
+		parseMap(filterValue, parameters, nextExp, filterKeyBean);
+		exp.addExpression(nextExp);
+	}
+	
+	
+	/**
+	 * Returns last expression e.g. product.sku.price will return price expression.
+	 * @param properties
+	 * @param exp
+	 * @param bean
+	 * @return
+	 */
+	private FilterExpression parseDots(String[] properties, FilterExpression exp, Bean bean) {
+
+		String nextProperty = properties[0];
+		Bean nextBean = bean.getProperty(nextProperty);
+		FilterExpression nextExp;
+		
+		if(nextBean.getType().isArray()) {
+			nextExp = new ArrayFilterExpression(nextProperty, nextBean);
+			exp.addExpression(nextExp);
+		} else if (Collection.class.isAssignableFrom(nextBean.getType())) {
+			nextExp = new CollectionFilterExpression(nextProperty, nextBean);
+			exp.addExpression(nextExp);
+		} else if (Map.class.isAssignableFrom(nextBean.getType())) {
+			nextExp = new MapFilterExpression(nextProperty, nextBean);
+			exp.addExpression(nextExp);
+		}  else {
+			nextExp = new ClassFilterExpression(nextProperty, nextBean);
+			exp.addExpression(nextExp);
+		}
+		
+		if(properties.length>1) {
+			//recursion
+			return parseDots(Arrays.copyOfRange(properties, 1, properties.length), nextExp, nextBean);
+		}
+		return nextExp;
 	}
 
 	private boolean containsOperator(final Map<String, ?> filterMap) {
@@ -164,15 +210,15 @@ public class FilterParser {
 		return false;
 	}
 
-	private Object[] toArrays(Object object, Map<String, ?> args) {
+	private Object[] toArrays(Object object, Map<String, ?> parameters) {
 		if (object instanceof Collection) {
 			return ((Collection<?>) object).toArray();
 		} else {
 			String s = (String) object;
 			if (s.startsWith("?")) {
-				Object o = args.get(s.substring(1));
+				Object o = parameters.get(s.substring(1));
 				if (o == null) {
-					throw new JFilterException("Filter argument [" + s + "] value not given the the argument Map [" + args + "]");
+					throw new JFilterException("Filter argument [" + s + "] value not given the the argument Map [" + parameters + "]");
 				}
 				if (o instanceof Collection) {
 					return ((Collection<?>) o).toArray();

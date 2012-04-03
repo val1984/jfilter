@@ -143,7 +143,7 @@ public class Main {
 	public static void filter3() {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{'lineItems':{'lineAmount':'1'}}");
+		Collection<SalesOrder> fc = filter.execute("{'lineItems.lineAmount':'1'}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -160,7 +160,7 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id': '0'}, {'billingAddress':{'city':'DEL'}}]}");
+		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id': '0'}, {'billingAddress.city':'DEL'}]}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -177,7 +177,7 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{'billingAddress':{'lines':'line3'}}");
+		Collection<SalesOrder> fc = filter.execute("{'billingAddress.lines':'line3'}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -194,7 +194,7 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id':'0'}, {'lineItems':{'lineAmount':'10'}}]}");
+		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id':'0'}, {'lineItems.lineAmount':'10'}]}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);
@@ -210,9 +210,8 @@ public class Main {
 	 */
 	public static void filter7() {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
-
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{'lineItems':{'taxes':{ 'key':{'code':'GST'}, 'value':{'$gt': '1.01'}}}}");
+		Collection<SalesOrder> fc = filter.execute("{'lineItems.taxes':{ 'key':{'code':'GST'}, 'value':{'$gt': '1.01'}}}");
 		long etime = System.currentTimeMillis();
 		for (SalesOrder o : fc) {
 			System.out.println(o);

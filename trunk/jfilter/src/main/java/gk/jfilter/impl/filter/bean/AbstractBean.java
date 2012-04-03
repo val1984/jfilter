@@ -18,6 +18,10 @@ public abstract class AbstractBean implements Bean {
 	protected AbstractBean(Class<?> type, Method readMethod) {
 		this.type=type;
 		this.readMethod=readMethod;
+		if(readMethod!=null) {
+			// to improve performance
+			readMethod.setAccessible(true);
+		}
 	}
 	
 	protected void populateProperties(Class<?> type) throws IntrospectionException {
@@ -65,6 +69,6 @@ public abstract class AbstractBean implements Bean {
 		if(bean==null) {
 			throw new JFilterException("Property: "+propertyName+" does not exist in the class: "+type);
 		}
-		return properties.get(propertyName);
+		return bean;
 	}
 }

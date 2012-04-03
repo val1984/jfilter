@@ -8,12 +8,7 @@ public class MapFilterExpression extends AbstractFilterExpression {
 	
 	MapFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
-		this.bean=bean.getProperty(filterKey);
-	}
-
-	@Override
-	public Object getBeanPropertyValue(Object object) {
-		return bean.getValue(object);
+		this.bean=bean;
 	}
 
 	/**
@@ -21,7 +16,7 @@ public class MapFilterExpression extends AbstractFilterExpression {
 	 */
 	@Override
 	public boolean eval(Object object) {
-		Map<?,?> values = (Map<?,?>) object;
+		Map<?,?> values = (Map<?,?>) bean.getValue(object);
 		for (Object value : values.entrySet()) {
 			if (and(value) == true) {
 				return true;
@@ -32,7 +27,7 @@ public class MapFilterExpression extends AbstractFilterExpression {
 
 	private boolean and(Object object) {
 		for (FilterExpression exp : expressions) {
-			if (exp.eval(exp.getBeanPropertyValue(object)) == false) {
+			if (exp.eval(object) == false) {
 				return false;
 			}
 		}
