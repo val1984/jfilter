@@ -27,7 +27,7 @@ Java bean class must satisfied following conditions to be parsed successfully by
 || $and || AND || || used for join||
 || $or || OR || || used for join||
 
-*All*: All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte, `ByteBuffer`, Calendar, Character, `CharBuffer`, java.util.Date, `java.sql.DateDouble`, `DoubleBufferEnum`, File, Float, `FloatBuffer`, `GregorianCalendar`, `IntBuffer`, Integer, Long, `LongBuffer`, Rdn, Short, `ShortBuffer`, String, java.sql.Time, java.sql.Timestamp, URI, UUID
+*All*: All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte,  Calendar, Character, java.util.Date, Float, Integer, Long, Short, String, java.sql.Time, java.sql.Timestamp, URI, UUID
 
 == Parameterized filters ==
 
