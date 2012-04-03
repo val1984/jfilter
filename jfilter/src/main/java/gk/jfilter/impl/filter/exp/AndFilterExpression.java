@@ -11,15 +11,11 @@ public class AndFilterExpression extends AbstractFilterExpression {
 
 	public boolean eval(Object object) {
 		for (FilterExpression exp : expressions) {
-			if (exp.eval(exp.getBeanPropertyValue(object)) == false) {
+			if (exp.eval(object) == false) {
 				return false;
 			}
 		}
 		return true;
-	}
-
-	public Object getBeanPropertyValue(Object object) {
-		return object;
 	}
 
 }

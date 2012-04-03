@@ -12,7 +12,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		List<Product> products = new ArrayList<Product>();
-		for (int i = 0; i <= 10000; ++i) {
+		for (int i = 0; i <= 1000000; ++i) {
 			Product product = new Product(i);
 			product.addSku(new Sku("RedApple", i * 10));
 			product.addSku(new Sku("RedApple", i * 10));
@@ -65,7 +65,7 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{ '$or':[{'code': '5'}, {'skus': {'price':{'$le':'60'}}}]}");
+		Collection<Product> fp = filter.execute("{ '$or':[{'code': '5'}, {'skus.price':{'$le':'60'}}]}");
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);

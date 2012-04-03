@@ -1,5 +1,7 @@
 package gk.jfilter.impl.filter.exp;
 
+import gk.jfilter.impl.filter.bean.Bean;
+
 /**
  * 
  * 
@@ -10,8 +12,8 @@ package gk.jfilter.impl.filter.exp;
 public interface FilterExpression {
 
 	String getFilterKey();
-
-	Object getBeanPropertyValue(Object object);
+	
+	Bean getBean();
 
 	void addExpression(FilterExpression expression);
 

@@ -18,7 +18,7 @@ public class SimpleFilterExpression extends AbstractFilterExpression {
 	SimpleFilterExpression(String filterKey, Object[] filterValues, Operator operator, Bean bean) {
 		this.filterKey = filterKey;
 		this.operator = operator;
-		this.bean = bean.getProperty(filterKey);
+		this.bean = bean;
 		setFilterValues(filterValues);
 	}
 
@@ -32,11 +32,7 @@ public class SimpleFilterExpression extends AbstractFilterExpression {
 	}
 
 	public boolean eval(Object object) {
-		return comparator.compare((Comparable) object, this.filterValues, this.operator);
-	}
-
-	public Object getBeanPropertyValue(Object object) {
-		return bean.getValue(object);
+		return comparator.compare((Comparable) bean.getValue(object), this.filterValues, this.operator);
 	}
 
 	public String toString() {

@@ -18,8 +18,14 @@ public abstract class AbstractFilterExpression implements FilterExpression {
 	protected Bean bean;
 	protected final List<FilterExpression> expressions = new ArrayList<FilterExpression>(5);
 	
+	@Override
 	public String getFilterKey() {
 		return filterKey;
+	}
+	
+	@Override
+	public Bean getBean() {
+		return bean;
 	}
 
 	public void addExpression(FilterExpression expression) {
