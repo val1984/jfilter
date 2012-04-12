@@ -95,7 +95,7 @@ public class FilterParser {
 		/** e.g. {$and:[{a:"v1"}, {b:"v2}]} */
 		if (filterValue instanceof Collection) {
 			if (!Operator.isJoin(filterKey)) {
-				throw new JFilterException(" $and or $or expected. with collection of expressions: " + filterValue);
+				throw new JFilterException(" $and or $or expected. with collection of expressions: " + filterValue+" but was "+filterKey);
 			}
 			parseCollection(filterKey, (Collection<Map<String, ?>>) filterValue, parameters, exp, bean);
 			return;

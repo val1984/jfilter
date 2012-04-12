@@ -33,10 +33,12 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		//Collection<Product> fp = filter.execute("{\"code\":\"5\"}");
-		Map<String, Integer> args = new HashMap<String, Integer>(1);
-		args.put("code", 5);
-		Collection<Product> fp = filter.execute("{'code':'?code'}", args);
+		
+		Map<String, Integer> parameters = new HashMap<String, Integer>();
+		parameters.put("code", 5);
+		
+		Collection<Product> fp = filter.execute("{'code':'?code'}", parameters);
+		
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
@@ -49,7 +51,16 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{'code': {'$in':['5', '10', '100']}}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		List<Integer> codes = new ArrayList<Integer>();
+		codes.add(5);
+		codes.add(10);
+		codes.add(100);
+		parameters.put("codes", codes);
+		
+		Collection<Product> fp = filter.execute("{'code': {'$in':'?codes'}}", parameters);
+		
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
 			System.out.println(p);
@@ -65,24 +76,38 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{ '$or':[{'code': '5'}, {'skus.price':{'$le':'60'}}]}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("code", 5);
+		parameters.put("price", 60);
+		
+		Collection<Product> fp = filter.execute("{ '$and':[{'code': '?code'}, {'skus.price':{'$le':'?price'}}]}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (Product p : fp) {
 			System.out.println(p);
 		}
 		System.out.println("Filter3 Time in millis:" + (etime - stime));
 	}
-
+	
 	private static void filter4(Collection<Product> products) {
 		/**
-		 * Select all products where any of the sku price 500 sku price is less
+		 * Select all products where any of the sku price 500 or sku price is less
 		 * than 60
 		 */
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{ '$or':[{'skus': { '$or': [{'price':'500'}, {'price':{'$le':'60'}}]}}]}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("price1", 60);
+		parameters.put("price2", 500);
+		
+		Collection<Product> fp = filter.execute("{'skus': { '$or': [{'price':{'$le':'?price1'}}, {'price':'?price2'}]}}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (Product p : fp) {
 			System.out.println(p);
 		}
@@ -97,8 +122,18 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<Product> fp = filter.execute("{'skus': {'$and':[{'price':{'$in':['20', '40']}}, {'code':'RedApple'}]}}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		List<Integer> prices = new ArrayList<Integer>();
+		prices.add(20);
+		prices.add(40);
+		parameters.put("prices", prices);
+		parameters.put("skuCode", "RedApple");
+		
+		Collection<Product> fp = filter.execute("{'skus': {'$and':[{'price':{'$in':'?prices'}}, {'code':'?skuCode'}]}}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (Product p : fp) {
 			System.out.println(p);
 		}
@@ -113,9 +148,20 @@ public class Main {
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
 
 		long stime = System.currentTimeMillis();
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		List<Integer> prices = new ArrayList<Integer>();
+		prices.add(20);
+		prices.add(40);
+		parameters.put("prices", prices);
+		parameters.put("skuCode", "RedApple");
+		parameters.put("code", 5);
+		
 		Collection<Product> fp = filter
-				.execute("{'$or':[{'code':'10'},{'skus': {'$and':[{'price':{'$in':['20', '40']}}, {'code':'RedApple'}]}}]}");
+				.execute("{'$and':[{'code':'?code'},{'skus': {'$and':[{'price':{'$in':'?prices'}}, {'code':'?skuCode'}]}}]}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (Product p : fp) {
 			System.out.println(p);
 		}

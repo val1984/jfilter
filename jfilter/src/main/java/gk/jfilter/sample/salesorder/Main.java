@@ -94,8 +94,14 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'10'}}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", 5);
+		
+		Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?id'}}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
@@ -110,10 +116,14 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Map<String, Integer> parameters = new HashMap<String, Integer>(1);
+		
+		Map<String, Integer> parameters = new HashMap<String, Integer>();
 		parameters.put("id", 10);
+		
 		Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?id'}}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
@@ -127,8 +137,17 @@ public class Main {
 	public static void filter2() {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{ 'id': {'$in':['0', '100']}}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(0);
+		ids.add(100);
+		parameters.put("prices", ids);
+		
+		Collection<SalesOrder> fc = filter.execute("{ 'id': {'$in':'?prices'}}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
@@ -143,8 +162,14 @@ public class Main {
 	public static void filter3() {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{'lineItems.lineAmount':'1'}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("lineAmount", 1);
+		
+		Collection<SalesOrder> fc = filter.execute("{'lineItems.lineAmount':'?lineAmount'}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
@@ -160,8 +185,15 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id': '0'}, {'billingAddress.city':'DEL'}]}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", 0);
+		parameters.put("city", "DEL");
+		
+		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id': '0'}, {'billingAddress.city':'DEL'}]}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
@@ -177,8 +209,14 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{'billingAddress.lines':'line3'}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("line", "line3");
+		
+		Collection<SalesOrder> fc = filter.execute("{'billingAddress.lines':'?line'}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
@@ -194,8 +232,15 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id':'0'}, {'lineItems.lineAmount':'10'}]}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", 0);
+		parameters.put("lineAmount", 10);
+		
+		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id':'?id'}, {'lineItems.lineAmount':'?lineAmount'}]}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
@@ -211,8 +256,15 @@ public class Main {
 	public static void filter7() {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 		long stime = System.currentTimeMillis();
-		Collection<SalesOrder> fc = filter.execute("{'lineItems.taxes':{ 'key':{'code':'GST'}, 'value':{'$gt': '1.01'}}}");
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("taxCode", "GST");
+		parameters.put("taxValue", 1.01);
+		
+		Collection<SalesOrder> fc = filter.execute("{'lineItems.taxes':{ 'key':{'code':'?taxCode'}, 'value':{'$gt': '?taxValue'}}}", parameters);
+		
 		long etime = System.currentTimeMillis();
+		
 		for (SalesOrder o : fc) {
 			System.out.println(o);
 		}
