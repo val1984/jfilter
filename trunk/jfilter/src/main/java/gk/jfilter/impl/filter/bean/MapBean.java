@@ -12,8 +12,9 @@ import java.util.Map;
 
 public class MapBean extends AbstractBean {
 	
-	public MapBean(Class<?> type, Method readMethod) throws IntrospectionException {
-		super(type, readMethod);
+	public MapBean(Class<?> type, Method readMethod, Bean parent) throws IntrospectionException {
+		super(type, readMethod, parent);
+		populateProperties(this.type);
 		
 		Type t = readMethod.getGenericReturnType();
 		if (t instanceof ParameterizedType) {

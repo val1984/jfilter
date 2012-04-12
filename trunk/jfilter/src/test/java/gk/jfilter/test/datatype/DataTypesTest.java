@@ -7,7 +7,9 @@ import gk.jfilter.impl.filter.exp.Operator;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.BeforeClass;
@@ -36,49 +38,77 @@ public class DataTypesTest {
 	@Ignore
 	public void testString() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"stringVar\":\"string\"}"));
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("value", "string");
+		
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'stringVar':'?value'}", parameters));
 		assertEquals(fdummies.get(0).getStringVar(), "string");
 	}
 	
 	@Ignore
 	public void testEnum() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"enumVar\":\"$and\"}"));
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("value", "$and");
+		
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'enumVar':'?value'}", parameters));
 		assertEquals(fdummies.get(0).getEnumVar(), Operator.$and);
 	}
 	
 	@Ignore
 	public void testJavaUtilDate() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"javaUtilDateVar\":{\"$gt\":\"2011-12-23\"}}"));
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("value", "2011-12-23");
+		
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'javaUtilDateVar':{'$gt':'?value'}}", parameters));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 	
 	@Ignore
 	public void testJavaSqlDate() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"javaSqlDateVar\":{\"$gt\":\"2011-12-23\"}}"));
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("value", "2011-12-23");
+		
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'javaSqlDateVar':{'$gt':'?value'}}", parameters));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 	
 	@Ignore
 	public void testUuid() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"uuid\":\""+uuid.toString()+"\"}"));
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("value", uuid);
+		
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'uuid':'?value'}", parameters));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 	
 	@Test
 	public void testSqlTimestamp() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"javaSqlTimestampVar\":{\"$gt\":\"2011-12-23\"}}"));
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("value", "2011-12-23");
+		
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'javaSqlTimestampVar':{'$gt':'?value'}}", parameters));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 	
 	@Ignore
 	public void testCalendar() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{\"calendarVar\":{\"$gt\":\"2011-12-23\"}}"));
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("value", "2011-12-23");
+		
+		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'calendarVar':{'$gt':'?value'}}", parameters));
 		assertEquals(fdummies.get(0).getId(), 1);
 	}
 

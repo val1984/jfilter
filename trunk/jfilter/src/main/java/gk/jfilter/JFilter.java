@@ -103,18 +103,6 @@ public class JFilter<T> {
 	}
 
 	/**
-	 * Executes non parameterized filter.
-	 * 
-	 * @param jsonFilter
-	 *            filter in json format.
-	 * @return filtered collection.
-	 */
-	public Collection<T> execute(String jsonFilter) {
-		this.filterExp = filterParser.parse(jsonFilter);
-		return execute();
-	}
-
-	/**
 	 * Executes parameterized filter.
 	 * 
 	 * @param filter
