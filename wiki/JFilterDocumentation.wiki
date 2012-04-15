@@ -48,3 +48,10 @@ Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?id'}}", parameters);
 You can use non property methods in a filter, the method must be non void and should be of zero argument.
 Example:
 {'toString':'?1'}
+
+== Inherited properties and methods ==
+JFilter supports inherited properties and method of any level. That means you can give inherited properties or methods in a filter.
+See in the following example getClass() method of Object class is used in a filter.
+
+Example:
+ `{'getClass.getName':'eg.MyClass'}` - filter collection where class name is "eg.MyClass".`
