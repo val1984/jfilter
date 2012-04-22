@@ -9,31 +9,32 @@ import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Main class to execute filter/query on different type of collection classes
- * (java.util.Collection, java.util.Map or arrays). New instance of this class
- * to be created for each collection. Then this instance can be used to execute
- * a single json filter or multiple json filters with different parameters.
+ * Main class to filter/query collections (java.util.Collection, java.util.Map or arrays).
+ * New instance of this class to be created for each collection. Then this instance can be used to execute
+ * queries multiple times on the collection.
  * Following are different ways to execute filter.
+ * <p><blockquote><pre>
+ * Collection<Pet> pets = new ArrayList<Pet>();
+ * JFilter jfilter = new JFilter(pets, Pet.class);
+ * Collection<Pet> cats = filter.execute("{'type':'?1'}", "CAT");
  * 
- * Collection<Pet> pets = new ArrayList<Pet>(); JFilter jfilter = new
- * JFilter(pets, Pet.class); Collection<Pet> cats =
- * filter.execute("{'type':'CAT'}");
+ * Collection<Pet> pets = new ArrayList<Pet>();
+ * JFilter jfilter = new JFilter(pets, Pet.class);
+ * Map<String, ?> parameters = new HashMap<String,String>();
  * 
- * Collection<Pet> pets = new ArrayList<Pet>(); JFilter jfilter = new
- * JFilter(pets, Pet.class); Map<String, ?> parameters = new
- * HashMap<String,String>();
+ * parameters.put("type", "CAT"); 
+ * Collection<Pet> cats = jfilter.execute("{'type':'?type'}", parameters);
  * 
- * parameters.put("type", "CAT"); Collection<Pet> cats =
- * jfilter.execute("{'type':'?type'}", args);
+ * parameters.put("type", "DOG"); 
+ * Collection<Pet> dogs = jfilter.execute("{'type':'?type'}", parameters);
  * 
- * parameters.put("type", "DOG"); Collection<Pet> dogs =
- * jfilter.execute("{'type':'?type'}", args);
- * 
+ * </pre><blockquote></p>
  * @author Kamran Ali Khan (khankamranali@gmail.com)
  * 
  */
@@ -103,7 +104,10 @@ public class JFilter<T> {
 	}
 
 	/**
-	 * Executes parameterized filter.
+	 * Executes filter with array of parameter values. Parameters are given as
+	 * "?1", "?2" etc in the filter, starting from "?1" to "?n" where n is
+	 * integer. Parameter values are are picked from corresponding argument position in
+	 * the variable arguments.
 	 * 
 	 * @param filter
 	 *            filter in json format.
@@ -114,12 +118,34 @@ public class JFilter<T> {
 	 *            values are given as List.
 	 * @return filtered collection.
 	 */
+	public Collection<T> execute(String filter, Object... parameters) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Integer i = 1;
+		for (Object parameter : parameters) {
+			map.put(i.toString(), parameter);
+			++i;
+		}
+		return execute(filter, map);
+	}
+	
+	/**
+	 * Executes filter with map of parameter values. filter parameter values are
+	 * given in key value form where key is string given in filter in "?string"
+	 * format and value is a object of same class as of bean property. $in and
+	 * $nin values are given as List of objects.
+	 * 
+	 * @param filter
+	 *            filter in json format.
+	 * @param parameters
+	 *            Map of parameter values.
+	 * @return filtered collection.
+	 */
 	public Collection<T> execute(String filter, Map<String, ?> parameters) {
 		this.filterExp = filterParser.parse(filter, parameters);
 		return execute();
 	}
 
-	private Collection<T> execute() {
+	private List<T> execute() {
 		List<T> list = new ArrayList<T>();
 
 		while (itr.hasNext()) {

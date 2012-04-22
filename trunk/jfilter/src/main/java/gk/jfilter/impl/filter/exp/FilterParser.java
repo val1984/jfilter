@@ -24,7 +24,7 @@ public class FilterParser {
 	public FilterExpression parse(String jsonFilter) {
 		return parse(jsonFilter, null);
 	}
-
+	
 	public FilterExpression parse(String jsonFilter, Map<String, ?> parameters) {
 		try {
 			Map<String, ?> filterMap = json.toMap(jsonFilter.getBytes());

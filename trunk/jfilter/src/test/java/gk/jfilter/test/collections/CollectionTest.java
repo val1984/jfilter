@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CollectionTest {
@@ -51,10 +52,7 @@ public class CollectionTest {
 	public void testLegs() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("legs", 4);
-
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'legs':'?legs'}", parameters));
+		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'legs':'?1'}", 4));
 		assertEquals(7,fa.size());
 	}
 	
@@ -99,6 +97,17 @@ public class CollectionTest {
 		parameters.put("class", "gk.jfilter.test.common.model.Cat");
 		
 		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'class.name':'?class'}", parameters));
+		assertEquals(4,fa.size());
+	}
+	
+	@Ignore
+	public void testToString() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("class", "gk.jfilter.test.common.model.Cat");
+		
+		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'class.name.toString':'?class'}", parameters));
 		assertEquals(4,fa.size());
 	}
 

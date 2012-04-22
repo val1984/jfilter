@@ -5,6 +5,7 @@ import java.util.List;
 
 public abstract class Animal {
 	List<Animal> children = new ArrayList<Animal>();
+	Animal mother = null;
 	
 	public void addChild(Animal child) {
 		children.add(child);
@@ -12,6 +13,14 @@ public abstract class Animal {
 
 	public List<Animal> getChildren() {
 		return children;
+	}
+	
+	public void setMother(Animal mother) {
+		this.mother=mother;
+	}
+	
+	public Animal getMother() {
+		return mother;
 	}
 	
 	public abstract String getName();
