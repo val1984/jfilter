@@ -10,6 +10,10 @@ public class AndFilterExpression extends AbstractFilterExpression {
 	}
 
 	public boolean eval(Object object) {
+		if(object==null) {
+			return false;
+		}
+		
 		for (FilterExpression exp : expressions) {
 			if (exp.eval(object) == false) {
 				return false;

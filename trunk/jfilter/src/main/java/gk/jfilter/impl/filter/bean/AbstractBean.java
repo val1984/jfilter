@@ -4,8 +4,6 @@ import gk.jfilter.JFilterException;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,20 +13,22 @@ public abstract class AbstractBean implements Bean {
 	protected Class<?> type;
 	protected Map<String, Bean> properties = new HashMap<String, Bean>();
 	protected Bean parent;
+	Map<String, Method> methods = new HashMap<String, Method>();
 
 	protected AbstractBean(Class<?> type, Method readMethod, Bean parent) {
 		this.type = type;
 		this.readMethod = readMethod;
 		this.parent = parent;
+		
+		addMethods(type);
 	}
 
-	protected void populateProperties(Class<?> type) throws IntrospectionException {
-		// Method[] methods = type.getDeclaredMethods();
+	protected void addMethods(Class<?> type) {
 		Method[] methods = type.getMethods();
 		for (Method m : methods) {
 			if (isSupported(m)) {
 				m.setAccessible(true);
-				addProperty(m.getName(), m.getReturnType(), m);
+				this.methods.put(m.getName(), m);
 			}
 		}
 	}
@@ -62,16 +62,38 @@ public abstract class AbstractBean implements Bean {
 
 	@Override
 	public Bean getProperty(String propertyName) {
-		// first try with getter method
+		// first try with getter method.
 		Bean bean = properties.get(makeGetter(propertyName));
 		if (bean == null) {
-			// again try direct method
+			// again try direct method.
 			bean = properties.get(propertyName);
+			//try to load property.
 			if (bean == null) {
-				throw new JFilterException("Property: " + propertyName + " does not exist in the class: " + type);
+				return addProperty(propertyName);
 			}
 		}
 		return bean;
+	}
+
+	public Bean addProperty(String propertyName) {
+		// first try with getter method
+		Method method = methods.get(makeGetter(propertyName));
+		if (method == null) {
+			// again try direct method
+			method = methods.get(propertyName);
+		}
+
+		if (method != null) {
+			try {
+				addProperty(method.getName(), method.getReturnType(), method);
+			} catch (IntrospectionException e) {
+				throw new JFilterException("Exception while adding property: " + propertyName, e);
+			}
+		} else {
+			throw new JFilterException("Property: " + propertyName + " does not exist in the class: " + type);
+		}
+
+		return properties.get(method.getName());
 	}
 
 	protected String makeGetter(String property) {
@@ -90,32 +112,8 @@ public abstract class AbstractBean implements Bean {
 	 */
 	protected boolean isSupported(Method m) {
 		if ((m.getReturnType() != Void.TYPE) && (m.getParameterTypes().length == 0)) {
-			if (parent != null && ( Class.class.isAssignableFrom(parent.getType()) || parent.getType().isAssignableFrom(type))) {
-				return false;
-			}
-			
-			if(parent!=null)
-				System.out.println("method:"+m.getName()+"  type:"+type+"  parent type:"+parent.getType());
-			else 
-				System.out.println("method:"+m.getName()+"  type:"+type+"  parent type: null");
-			
-			// if any of the parameterized type matching parent bean type return
-			// false
-			// to avoid recursion else true.
-			Type t = m.getGenericReturnType();
-			if (t instanceof ParameterizedType) {
-				ParameterizedType ptype = (ParameterizedType) t;
-				for (Type atype : ptype.getActualTypeArguments()) {
-					if (atype instanceof Class && parent != null && parent.getType().isAssignableFrom((Class<?>) atype) == true) {
-						return false;
-					}
-				}
-
-			}
 			return true;
-
 		}
-
 		return false;
 	}
 }

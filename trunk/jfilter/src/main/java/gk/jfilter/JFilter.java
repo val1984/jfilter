@@ -44,7 +44,7 @@ public class JFilter<T> {
 	private FilterParser filterParser;
 
 	/** Supported collection types */
-	private Iterator<T> itr;
+	private Collection<T> collection;
 
 	/**
 	 * 
@@ -55,7 +55,7 @@ public class JFilter<T> {
 	 */
 	public JFilter(Collection<T> collection, Class<T> klass) {
 		init(klass);
-		itr = collection.iterator();
+		this.collection=collection;
 	}
 
 	/**
@@ -67,33 +67,10 @@ public class JFilter<T> {
 	 */
 	public JFilter(T[] array, Class<T> klass) {
 		init(klass);
-		itr = Arrays.asList(array).iterator();
+		this.collection=Arrays.asList(array);
 	}
 
-	/**
-	 * 
-	 * @param map
-	 *            values of Map are filtered.
-	 * @param klass
-	 *            array type.
-	 */
-	public JFilter(Map<?, T> map, Class<T> klass) {
-		init(klass);
-		map.values().iterator();
-	}
 
-	/**
-	 * 
-	 * @param itr
-	 *            Iterator of collection to be filtered.
-	 * @param klass
-	 *            array type.
-	 */
-	public JFilter(Iterator<T> itr, Class<T> klass) {
-		init(klass);
-		this.itr=itr;
-	}
-	
 	private void init(Class<T> klass) {
 		try {
 			this.bean = new QueryBean(klass);
@@ -118,7 +95,7 @@ public class JFilter<T> {
 	 *            values are given as List.
 	 * @return filtered collection.
 	 */
-	public Collection<T> execute(String filter, Object... parameters) {
+	public List<T> execute(String filter, Object... parameters) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Integer i = 1;
 		for (Object parameter : parameters) {
@@ -140,14 +117,15 @@ public class JFilter<T> {
 	 *            Map of parameter values.
 	 * @return filtered collection.
 	 */
-	public Collection<T> execute(String filter, Map<String, ?> parameters) {
+	public List<T> execute(String filter, Map<String, ?> parameters) {
 		this.filterExp = filterParser.parse(filter, parameters);
 		return execute();
 	}
 
 	private List<T> execute() {
 		List<T> list = new ArrayList<T>();
-
+		Iterator<T> itr = collection.iterator();
+		
 		while (itr.hasNext()) {
 			T o = itr.next();
 			if (filterExp.eval(o)) {

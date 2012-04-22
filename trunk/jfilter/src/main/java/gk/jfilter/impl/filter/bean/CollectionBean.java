@@ -11,7 +11,6 @@ public class CollectionBean extends AbstractBean {
 
 	public CollectionBean(Class<?> type, Method readMethod, Bean parent) throws IntrospectionException {
 		super(type, readMethod, parent);
-		populateProperties(this.type);
 
 		Type t = readMethod.getGenericReturnType();
 		if (t instanceof ParameterizedType) {
@@ -21,7 +20,7 @@ public class CollectionBean extends AbstractBean {
 				if (actualClass.isPrimitive() || Comparable.class.isAssignableFrom(actualClass)) {
 					properties.put("get", new SimpleBean(actualClass, this));
 				} else {
-					populateProperties(actualClass);
+					addMethods(actualClass);
 				}
 			}
 		} else {

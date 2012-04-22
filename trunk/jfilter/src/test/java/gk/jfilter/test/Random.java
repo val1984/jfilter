@@ -1,14 +1,13 @@
 package gk.jfilter.test;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import gk.jfilter.JFilter;
 import gk.jfilter.test.common.model.Animal;
 import gk.jfilter.test.common.model.Cat;
 import gk.jfilter.test.common.model.Dog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,10 +25,7 @@ public class Random {
 		
 		dog1.addChild(dog2);
 		dog1.addChild(dog3);
-		
-		dog2.setMother(dog1);
-		dog3.setMother(dog1);
-		
+				
 		animals.add(dog1);
 		animals.add(dog2);
 		animals.add(dog3);
@@ -44,10 +40,6 @@ public class Random {
 		cat1.addChild(cat3);
 		cat1.addChild(cat4);
 		
-		cat2.setMother(cat1);
-		cat3.setMother(cat1);
-		cat4.setMother(cat1);
-	
 		animals.add(cat1);
 		animals.add(cat2);
 		animals.add(cat3);
@@ -58,7 +50,8 @@ public class Random {
 	public void testMother() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'mother.color':'?1'}", "black"));
-		assertEquals(3,fa.size());
+		assertEquals(2,filter.execute("{'mother.color':'?1'}", "black").size());
+		assertEquals(3,filter.execute("{'mother.color':'?1'}", "white").size());
 	}
+	
 }

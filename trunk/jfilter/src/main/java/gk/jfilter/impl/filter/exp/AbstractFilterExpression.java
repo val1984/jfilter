@@ -31,4 +31,5 @@ public abstract class AbstractFilterExpression implements FilterExpression {
 	public void addExpression(FilterExpression expression) {
 		expressions.add(expression);
 	}
+
 }

@@ -15,6 +15,10 @@ public class CollectionFilterExpression extends AbstractFilterExpression {
 	 * If any of the collection element matches the filter it is true.
 	 */
 	public boolean eval(Object object) {
+		if(object==null) {
+			return false;
+		}
+		
 		Collection<?> values = (Collection<?>) bean.getValue(object);
 		for (Object value : values) {
 			if (and(value) == true) {

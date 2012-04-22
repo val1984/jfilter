@@ -94,5 +94,6 @@ public class StringOperatorTest {
 		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$cts':'?1'}}", "a"));
 		assertEquals(2,fa.size());
 	}
+	
 }
 
