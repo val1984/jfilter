@@ -24,6 +24,30 @@ public class SimpleTypeComparator {
 			return (objectValue.compareTo(filterValues[0]) < 0);
 		} else if (operator == Operator.$le) {
 			return (objectValue.compareTo(filterValues[0]) <= 0);
+		} else if (operator == Operator.$sw) {
+			if(objectValue instanceof String) {
+				String fv = (String) filterValues[0];
+				String ov = (String) objectValue;
+				return ov.startsWith(fv);
+			} else {
+				throw new JFilterException("$sw operator is applicable for String data type. Parameter value is : "+filterValues[0]);
+			}
+		} else if (operator == Operator.$ew) {
+			if(objectValue instanceof String) {
+				String fv = (String) filterValues[0];
+				String ov = (String) objectValue;
+				return ov.endsWith(fv);
+			} else {
+				throw new JFilterException("$ew operator is applicable for String data type. Parameter value is : "+filterValues[0]);
+			}
+		} else if (operator == Operator.$cts) {
+			if(objectValue instanceof String) {
+				String fv = (String) filterValues[0];
+				String ov = (String) objectValue;
+				return ov.contains(fv);
+			} else {
+				throw new JFilterException("$cts operator is applicable for String data type. Parameter value is : "+filterValues[0]);
+			}
 		} else if (operator == Operator.$in) {
 			for (Comparable filterValue : filterValues) {
 				if (objectValue.compareTo(filterValue) == 0) {

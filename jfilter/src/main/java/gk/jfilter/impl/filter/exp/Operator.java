@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public enum Operator {
 
-	$gt, $lt, $le, $eq, $ne, $ge, $in, $nin, $size, $exist, $and, $or;
+	$gt, $lt, $le, $eq, $ne, $ge, $sw, $ew, $cts, $in, $nin, $size, $exist, $and, $or;
 
 	public static final EnumSet<Operator> COMPARATOR = EnumSet.range($gt, $exist);
 	public static final EnumSet<Operator> JOIN = EnumSet.of($and, $or);

@@ -94,10 +94,10 @@ public abstract class AbstractBean implements Bean {
 				return false;
 			}
 			
-			/*if(parent!=null)
+			if(parent!=null)
 				System.out.println("method:"+m.getName()+"  type:"+type+"  parent type:"+parent.getType());
 			else 
-				System.out.println("method:"+m.getName()+"  type:"+type+"  parent type: null");*/
+				System.out.println("method:"+m.getName()+"  type:"+type+"  parent type: null");
 			
 			// if any of the parameterized type matching parent bean type return
 			// false
