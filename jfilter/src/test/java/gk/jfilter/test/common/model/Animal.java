@@ -9,16 +9,13 @@ public abstract class Animal {
 	
 	public void addChild(Animal child) {
 		children.add(child);
+		child.mother=this;
 	}
 
 	public List<Animal> getChildren() {
 		return children;
 	}
-	
-	public void setMother(Animal mother) {
-		this.mother=mother;
-	}
-	
+		
 	public Animal getMother() {
 		return mother;
 	}

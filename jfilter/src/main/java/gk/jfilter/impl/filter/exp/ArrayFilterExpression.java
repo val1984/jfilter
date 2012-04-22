@@ -13,6 +13,10 @@ public class ArrayFilterExpression extends AbstractFilterExpression {
 	 * If any of the collection element matches the filter it is true.
 	 */
 	public boolean eval(Object object) {
+		if(object==null) {
+			return false;
+		}
+		
 		Object[] values = (Object[]) bean.getValue(object);
 		for (Object value : values) {
 			if (and(value) == true) {

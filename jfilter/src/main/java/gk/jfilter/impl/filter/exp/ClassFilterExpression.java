@@ -10,6 +10,10 @@ public class ClassFilterExpression extends AbstractFilterExpression {
 	}
 
 	public boolean eval(Object object) {
+		if(object==null) {
+			return false;
+		}
+		
 		Object o = bean.getValue(object);
 		for (FilterExpression exp : expressions) {
 			if (exp.eval(o) == false) {

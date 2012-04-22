@@ -218,7 +218,7 @@ public class FilterParser {
 			if (s.startsWith("?")) {
 				Object o = parameters.get(s.substring(1));
 				if (o == null) {
-					throw new JFilterException("Filter argument [" + s + "] value not given the the argument Map [" + parameters + "]");
+					throw new JFilterException("Filter parameter [" + s + "] value not given in the the parameter values [" + parameters + "]");
 				}
 				if (o instanceof Collection) {
 					return ((Collection<?>) o).toArray();
@@ -226,7 +226,10 @@ public class FilterParser {
 					return new Object[] { o };
 				}
 			} else {
-				return new Object[] { s };
+				throw new JFilterException(
+						"Filter parameter ["
+								+ s
+								+ "] should be in '?n' or '?s' where n is integer and s is string, and values should be supplied as Map or variable argument.");
 			}
 		}
 

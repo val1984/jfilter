@@ -16,6 +16,10 @@ public class MapFilterExpression extends AbstractFilterExpression {
 	 */
 	@Override
 	public boolean eval(Object object) {
+		if(object==null) {
+			return false;
+		}
+		
 		Map<?,?> values = (Map<?,?>) bean.getValue(object);
 		for (Object value : values.entrySet()) {
 			if (and(value) == true) {

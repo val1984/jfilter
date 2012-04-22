@@ -16,6 +16,5 @@ public class QueryBean extends AbstractBean {
 	
 	public QueryBean(Class<?> type) throws IntrospectionException {
 		super(type, null, null);
-		populateProperties(type);
 	}
 }

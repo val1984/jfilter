@@ -29,6 +29,10 @@ public class SimpleFilterExpression extends AbstractFilterExpression {
 	}
 
 	public boolean eval(Object object) {
+		if(object==null) {
+			return false;
+		}
+		
 		return comparator.compare((Comparable) bean.getValue(object), this.filterValues, this.operator);
 	}
 

@@ -100,7 +100,7 @@ public class CollectionTest {
 		assertEquals(4,fa.size());
 	}
 	
-	@Ignore
+	@Test
 	public void testToString() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
