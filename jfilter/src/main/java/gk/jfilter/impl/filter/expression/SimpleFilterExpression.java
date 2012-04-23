@@ -1,7 +1,8 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.expression;
 
 import gk.jfilter.impl.filter.bean.Bean;
 import gk.jfilter.impl.filter.comparator.SimpleTypeComparator;
+import gk.jfilter.impl.filter.parser.Operator;
 
 import java.util.Arrays;
 
@@ -12,7 +13,7 @@ public class SimpleFilterExpression extends AbstractFilterExpression {
 	/** for $in and $nin array of values otherwise single value. */
 	private Comparable<?>[] filterValues;
 
-	SimpleFilterExpression(String filterKey, Object[] filterValues, Operator operator, Bean bean) {
+	public SimpleFilterExpression(String filterKey, Object[] filterValues, Operator operator, Bean bean) {
 		this.filterKey = filterKey;
 		this.operator = operator;
 		this.bean = bean;

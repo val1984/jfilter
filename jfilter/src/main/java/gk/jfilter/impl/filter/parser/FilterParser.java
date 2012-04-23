@@ -1,4 +1,4 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.parser;
 
 import gk.jfilter.JFilterException;
 import gk.jfilter.impl.filter.bean.ArrayBean;
@@ -6,6 +6,14 @@ import gk.jfilter.impl.filter.bean.Bean;
 import gk.jfilter.impl.filter.bean.ClassBean;
 import gk.jfilter.impl.filter.bean.CollectionBean;
 import gk.jfilter.impl.filter.bean.MapBean;
+import gk.jfilter.impl.filter.expression.AndFilterExpression;
+import gk.jfilter.impl.filter.expression.ArrayFilterExpression;
+import gk.jfilter.impl.filter.expression.ClassFilterExpression;
+import gk.jfilter.impl.filter.expression.CollectionFilterExpression;
+import gk.jfilter.impl.filter.expression.FilterExpression;
+import gk.jfilter.impl.filter.expression.MapFilterExpression;
+import gk.jfilter.impl.filter.expression.OrFilterExpression;
+import gk.jfilter.impl.filter.expression.SimpleFilterExpression;
 import gk.jfilter.impl.filter.json.JacksonJsonImpl;
 import gk.jfilter.impl.filter.json.Json;
 

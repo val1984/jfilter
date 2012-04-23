@@ -2,7 +2,7 @@ package gk.jfilter.test.datatype;
 
 import static org.junit.Assert.assertEquals;
 import gk.jfilter.JFilter;
-import gk.jfilter.impl.filter.exp.Operator;
+import gk.jfilter.impl.filter.parser.Operator;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

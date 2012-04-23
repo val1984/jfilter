@@ -1,4 +1,4 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.expression;
 
 import gk.jfilter.impl.filter.bean.Bean;
 

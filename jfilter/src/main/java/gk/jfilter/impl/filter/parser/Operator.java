@@ -1,4 +1,4 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.parser;
 
 import gk.jfilter.JFilterException;
 

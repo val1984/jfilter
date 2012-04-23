@@ -1,10 +1,10 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.expression;
 
 import gk.jfilter.impl.filter.bean.Bean;
 
 public class OrFilterExpression extends AbstractFilterExpression {
 
-	OrFilterExpression(String filterKey, Bean bean) {
+	public OrFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
 		this.bean = bean;
 	}
