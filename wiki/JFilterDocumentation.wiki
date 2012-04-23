@@ -11,14 +11,20 @@ Please note that word query and filter is used interchangeably in this document.
 JFIlter library has only one class gk.jfilter.JFilter to filter/query collections (java.util.Collection, java.util.Map or arrays). New instance of this class to be created for each collection. Then this instance can be used to execute queries multiple times on the collection.
 Following are different ways to execute filter.
 {{{
+
 Collection<Pet> pets = new ArrayList<Pet>();
+//populate pets collection
+
 JFilter jfilter = new JFilter(pets, Pet.class);
 Collection<Pet> cats = filter.execute("{'type':'?1'}", "CAT");
  
 Collection<Pet> pets = new ArrayList<Pet>();
+//populate pets collection
+
 JFilter jfilter = new JFilter(pets, Pet.class);
+
 Map<String, ?> parameters = new HashMap<String,String>();
- 
+
 parameters.put("type", "CAT"); 
 Collection<Pet> cats = jfilter.execute("{'type':'?type'}", parameters);
  
