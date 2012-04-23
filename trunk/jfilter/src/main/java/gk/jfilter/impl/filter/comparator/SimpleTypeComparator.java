@@ -1,7 +1,7 @@
 package gk.jfilter.impl.filter.comparator;
 
 import gk.jfilter.JFilterException;
-import gk.jfilter.impl.filter.exp.Operator;
+import gk.jfilter.impl.filter.parser.Operator;
 
 public class SimpleTypeComparator {
 	/**

@@ -2,8 +2,8 @@ package gk.jfilter;
 
 import gk.jfilter.impl.filter.bean.Bean;
 import gk.jfilter.impl.filter.bean.QueryBean;
-import gk.jfilter.impl.filter.exp.FilterExpression;
-import gk.jfilter.impl.filter.exp.FilterParser;
+import gk.jfilter.impl.filter.expression.FilterExpression;
+import gk.jfilter.impl.filter.parser.FilterParser;
 
 import java.beans.IntrospectionException;
 import java.util.ArrayList;

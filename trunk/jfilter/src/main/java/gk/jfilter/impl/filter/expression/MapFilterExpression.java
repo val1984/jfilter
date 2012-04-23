@@ -1,4 +1,4 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.expression;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ import gk.jfilter.impl.filter.bean.Bean;
 
 public class MapFilterExpression extends AbstractFilterExpression {
 	
-	MapFilterExpression(String filterKey, Bean bean) {
+	public MapFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
 		this.bean=bean;
 	}

@@ -1,12 +1,12 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.expression;
 
 import gk.jfilter.impl.filter.bean.Bean;
 
-public class AndFilterExpression extends AbstractFilterExpression {
+public class ClassFilterExpression extends AbstractFilterExpression {
 
-	AndFilterExpression(String filterKey, Bean bean) {
+	public ClassFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
-		this.bean=bean;
+		this.bean = bean;
 	}
 
 	public boolean eval(Object object) {
@@ -14,8 +14,9 @@ public class AndFilterExpression extends AbstractFilterExpression {
 			return false;
 		}
 		
+		Object o = bean.getValue(object);
 		for (FilterExpression exp : expressions) {
-			if (exp.eval(object) == false) {
+			if (exp.eval(o) == false) {
 				return false;
 			}
 		}

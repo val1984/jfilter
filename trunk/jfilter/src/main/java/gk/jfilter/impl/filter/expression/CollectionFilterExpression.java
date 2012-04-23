@@ -1,10 +1,12 @@
-package gk.jfilter.impl.filter.exp;
+package gk.jfilter.impl.filter.expression;
+
+import java.util.Collection;
 
 import gk.jfilter.impl.filter.bean.Bean;
 
-public class ArrayFilterExpression extends AbstractFilterExpression {
+public class CollectionFilterExpression extends AbstractFilterExpression {
 
-	ArrayFilterExpression(String filterKey, Bean bean) {
+	public CollectionFilterExpression(String filterKey, Bean bean) {
 		this.filterKey = filterKey;
 		this.bean = bean;
 	}
@@ -17,7 +19,7 @@ public class ArrayFilterExpression extends AbstractFilterExpression {
 			return false;
 		}
 		
-		Object[] values = (Object[]) bean.getValue(object);
+		Collection<?> values = (Collection<?>) bean.getValue(object);
 		for (Object value : values) {
 			if (and(value) == true) {
 				return true;
