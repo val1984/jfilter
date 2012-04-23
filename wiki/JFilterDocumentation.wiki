@@ -27,9 +27,9 @@ Please note that word query and filter is used interchangeably in this document.
 || $lt || Less than || All || ||
 || $le || Less than equals to || All || ||
 || $eq || Equals to || All || ||
-|| $sw|| Same as String startsWith || String || ||
-|| $ew || Same as String endsWith || String || ||
-|| $cts || Same as String endsWith || String || ||
+|| $sw|| Same as String startsWith || String || This special operator is provided because JFilter supports methods without any arguments||
+|| $ew || Same as String endsWith || String || This special operator is provided because JFilter supports methods without any arguments||
+|| $cts || Same as String contails|| String || This special operator is provided because JFilter supports methods without any arguments||
 || $in || In || Collection, Array and Map|| ||
 || $nin || Not in || Collection, Array and Map|| ||
 || $and || AND || || used for join||
