@@ -16,7 +16,7 @@ Please note that word query and filter is used interchangeably in this document.
 == How to write json filter ==
 
  * Class should have getter method for a property that is specified in json filter.
- * java.util.Collection and Map type properties should be parameterized e.g. Map<String,List<String>>.
+ * java.util.Collection and Map type properties should be parameterized e.g. `Map<String,List<String>>`.
 
  * Filter can contains non property methods which are non void and has zero arguments, e.g {'toString':'?1'}.
 
@@ -65,4 +65,4 @@ JFilter supports inherited properties and method of any level. That means you ca
 See in the following example getClass() method of Object class is used in a filter.
 
 Example:
- `{'getClass.getName':'eg.MyClass'}` - filter collection where class name is "eg.MyClass".`
+ `{'getClass.getName':'eg.MyClass'}` - filter collection where class name is `"eg.MyClass".`
