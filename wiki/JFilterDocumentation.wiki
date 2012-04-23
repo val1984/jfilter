@@ -8,13 +8,17 @@ Please note that word query and filter is used interchangeably in this document.
  * Add JFilter and Jackson jars in you project class path.
 
 == Sample programs ==
- * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/product Product sample]
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/simple/Simple.java Simple sample]
+ * 
+[http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/product Product sample]
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/salesorder Sales order sample]
 
-== Bean requirements ==
-Java bean class must satisfied following conditions to be parsed successfully by JFilter.
- * Bean should have getter method on a property that is specified in json filter string.
- * java.util.Collection and Map type of properties should be parameterized. 
+== How to write json filter ==
+
+ * Class should have getter method for a property that is specified in json filter.
+ * java.util.Collection and Map type properties should be parameterized e.g. Map<String,List<String>>.
+
+ * Filter can contains non property methods which are non void and has zero arguments, e.g {'toString':'?1'}.
 
 == Supported operators ==
 
@@ -23,14 +27,21 @@ Java bean class must satisfied following conditions to be parsed successfully by
 || $ge || Greater than equals to || All || ||
 || $lt || Less than || All || ||
 || $le || Less than equals to || All || ||
-|| $eq || equals to || All || ||
+|| $eq || Equals to || All || ||
+|| $sw|| Same as String startsWith || String || ||
+|| $ew || Same as String endsWith || String || ||
+|| $cts || Same as String endsWith || String || ||
 || $in || In || Collection, Array and Map|| ||
 || $nin || Not in || Collection, Array and Map|| ||
 || $and || AND || || used for join||
 || $or || OR || || used for join||
 
-*All*: All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte,  Calendar, Character, java.util.Date, Float, Integer, Long, Short, String, java.sql.Time, java.sql.Timestamp, URI, UUID
+== Supported data types ==
+ All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte,  Calendar, Character, java.util.Date, Float, Integer, Long, Short, String, java.sql.Time, java.sql.Timestamp, URI, UUID
 
+== How to use different data types ==
+
+See the code of  [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/test/datatype/DataTypesTest.java Data type test program]
 == Parameterized filters ==
 
 Parameterized filters are when you do not specify attributes value in json filter string for example {'id':'?id'}. Question mark is used to indicate that value will be given separately. JFilter class provide two method to execute filters one for non parameterized filter and another for executing parameterized filters.
