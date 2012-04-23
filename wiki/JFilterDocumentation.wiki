@@ -9,8 +9,7 @@ Please note that word query and filter is used interchangeably in this document.
 
 == Sample programs ==
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/simple/Simple.java Simple sample]
- * 
-[http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/product Product sample]
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/product Product sample]
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/salesorder Sales order sample]
 
 == How to write json filter ==
