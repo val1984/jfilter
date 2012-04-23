@@ -26,7 +26,7 @@ public class StringTest {
 	public void testToString() {	
 		JFilter<String> filter = new JFilter<String>(animals, String.class);
 		
-		List<String> fa = new ArrayList<String>(filter.execute("{'toString':{'$cts':'?1'}}", "a"));
+		List<String> fa = filter.execute("{'toString':{'$cts':'?1'}}", "a");
 		assertEquals(3,fa.size());
 	}
 	
@@ -43,22 +43,22 @@ public class StringTest {
 	public void testTrim() {	
 		JFilter<String> filter = new JFilter<String>(animals, String.class);
 
-		assertEquals(1,filter.execute("{'toString.trim':'?1'}", "elephant").size());
+		assertEquals(1,filter.execute("{'trim':'?1'}", "elephant").size());
 	}
 	
 	@Test
 	public void testIsEmpty() {	
 		JFilter<String> filter = new JFilter<String>(animals, String.class);
 
-		assertEquals(6,filter.execute("{'toString.empty':'?1'}", false).size());
-		assertEquals(0,filter.execute("{'toString.empty':'?1'}", true).size());
+		assertEquals(6,filter.execute("{'empty':'?1'}", false).size());
+		assertEquals(0,filter.execute("{'empty':'?1'}", true).size());
 	}
 	
 	@Test
 	public void testLength() {	
 		JFilter<String> filter = new JFilter<String>(animals, String.class);
 
-		assertEquals(3,filter.execute("{'toString.length':'?1'}", 3).size());
-		assertEquals(1,filter.execute("{'toString.length':'?1'}", 4).size());
+		assertEquals(3,filter.execute("{'length':'?1'}", 3).size());
+		assertEquals(1,filter.execute("{'length':'?1'}", 4).size());
 	}
 }

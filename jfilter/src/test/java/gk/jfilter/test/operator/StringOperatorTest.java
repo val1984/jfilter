@@ -91,7 +91,7 @@ public class StringOperatorTest {
 	public void testCTS() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$cts':'?1'}}", "a"));
+		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name.toString':{'$cts':'?1'}}", "a"));
 		assertEquals(2,fa.size());
 	}
 	
