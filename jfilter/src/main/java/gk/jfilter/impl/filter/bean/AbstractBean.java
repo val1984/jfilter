@@ -65,7 +65,11 @@ public abstract class AbstractBean implements Bean {
 		// first try with getter method.
 		Bean bean = properties.get(makeGetter(propertyName));
 		if (bean == null) {
-			// again try direct method.
+			if (bean == null) {
+				// again try with isMethod
+				bean = properties.get(makeIsMethod(propertyName));
+			}
+			// again try with direct method.
 			bean = properties.get(propertyName);
 			//try to load property.
 			if (bean == null) {
@@ -78,6 +82,10 @@ public abstract class AbstractBean implements Bean {
 	public Bean addProperty(String propertyName) {
 		// first try with getter method
 		Method method = methods.get(makeGetter(propertyName));
+		if (method == null) {
+			// again try with isMethod
+			method = methods.get(makeIsMethod(propertyName));
+		}
 		if (method == null) {
 			// again try direct method
 			method = methods.get(propertyName);
@@ -100,6 +108,15 @@ public abstract class AbstractBean implements Bean {
 		char[] pa = property.toCharArray();
 		StringBuffer sb = new StringBuffer();
 		sb.append("get");
+		pa[0] = Character.toUpperCase(pa[0]);
+		sb.append(pa);
+		return sb.toString();
+	}
+	
+	protected String makeIsMethod(String property) {
+		char[] pa = property.toCharArray();
+		StringBuffer sb = new StringBuffer();
+		sb.append("is");
 		pa[0] = Character.toUpperCase(pa[0]);
 		sb.append(pa);
 		return sb.toString();
