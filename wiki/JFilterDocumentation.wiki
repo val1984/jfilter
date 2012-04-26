@@ -1,3 +1,4 @@
+#labels Featured
 = JFilter Documentation =
 
 Please note that word query and filter is used interchangeably in this document.
@@ -8,7 +9,7 @@ Please note that word query and filter is used interchangeably in this document.
  * Add JFilter and Jackson jars in you project class path.
 
 == Overview ==
-JFIlter library has only one class {{{gk.jfilter.JFilter}}} to filter/query collections (java.util.Collection, java.util.Map or arrays). New instance of this class to be created for each collection. Then this instance can be used to execute queries multiple times on the collection.
+JFIlter library has only one class [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/JFilter.java gk.jfilter.JFilter] to filter/query collections (java.util.Collection, java.util.Map or arrays). New instance of this class to be created for each collection. Then this instance can be used to execute queries multiple times on the collection.
 Following are different ways to execute filter.
 {{{
 
