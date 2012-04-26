@@ -8,7 +8,7 @@ Please note that word query and filter is used interchangeably in this document.
  * Add JFilter and Jackson jars in you project class path.
 
 == Overview ==
-JFIlter library has only one class gk.jfilter.JFilter to filter/query collections (java.util.Collection, java.util.Map or arrays). New instance of this class to be created for each collection. Then this instance can be used to execute queries multiple times on the collection.
+JFIlter library has only one class {{{gk.jfilter.JFilter}}} to filter/query collections (java.util.Collection, java.util.Map or arrays). New instance of this class to be created for each collection. Then this instance can be used to execute queries multiple times on the collection.
 Following are different ways to execute filter.
 {{{
 
@@ -68,8 +68,9 @@ Collection<Pet> dogs = jfilter.execute("{'type':'?type'}", parameters);
 See the code of  [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/test/datatype/DataTypesTest.java Data type test program]
 == Parameterized filters ==
 
-Parameterized filters are when you do not specify attributes value in json filter string for example {'id':'?id'}. Question mark is used to indicate that value will be given separately. JFilter class provide two method to execute filters one for non parameterized filter and another for executing parameterized filters.
-Filter parameters are given in key value form where key is string given in filter in "?string" format and value is object of matching property class of collection bean. $in and $nin values are given as List. 
+Parameterized filters are when you do not provide attributes value in json filter string for example {'id':'?id'}. Question mark is used to indicate that value will be given as argument of {{{JFilter.execute}}} method. There are two type of parameterized filters:
+
+ * Type 1: In this type Filter parameters are written as {'attribute':'?string'} where "string" is any string. Parameter values are given as Map argument where Map key is "string" and value is object of type "attribute" specified in the filter. In case of operator $in and $nin values are given as List. 
 
 Example:
 {{{
@@ -78,6 +79,18 @@ Map<String, Integer> parameters = new HashMap<String, Integer>(1);
 parameters.put("id", 10);
 Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?id'}}", parameters);
 }}}
+ 
+ * Type 2:  * Type 1: In this type parameters are given as "?1", "?2" etc in the filter, starting from "?1" to "?n" where n is integer. Parameter values are are picked from corresponding argument position in the variable arguments of {{{JFilter.execute}}} method.
+
+
+Example:
+{{{
+JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
+Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?1'}}", 10);
+}}}
+
+JFilter does not support non parameterized queries.
+
 
 == Non property method in a filter ==
 You can use non property methods in a filter, the method must be non void and should be of zero argument.
@@ -90,3 +103,5 @@ See in the following example getClass() method of Object class is used in a filt
 
 Example:
  `{'getClass.getName':'eg.MyClass'}` - filter collection where class name is `"eg.MyClass".`
+
+== Javadocs ==
