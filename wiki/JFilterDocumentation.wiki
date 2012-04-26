@@ -80,7 +80,7 @@ parameters.put("id", 10);
 Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?id'}}", parameters);
 }}}
  
- * Type 2:  * Type 1: In this type parameters are given as "?1", "?2" etc in the filter, starting from "?1" to "?n" where n is integer. Parameter values are are picked from corresponding argument position in the variable arguments of {{{JFilter.execute}}} method.
+ * Type 2: In this type parameters are given as "?1", "?2" etc in the filter, starting from "?1" to "?n" where n is integer. Parameter values are are picked from corresponding argument position in the variable arguments of {{{JFilter.execute}}} method.
 
 
 Example:
@@ -105,3 +105,5 @@ Example:
  `{'getClass.getName':'eg.MyClass'}` - filter collection where class name is `"eg.MyClass".`
 
 == Javadocs ==
+
+[http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/JFilter.java JFilter]
