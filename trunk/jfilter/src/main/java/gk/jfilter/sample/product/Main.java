@@ -21,6 +21,7 @@ public class Main {
 		}
 
 		filter1(products);
+		filter1(products);
 		filter2(products);
 		filter3(products);
 		filter4(products);

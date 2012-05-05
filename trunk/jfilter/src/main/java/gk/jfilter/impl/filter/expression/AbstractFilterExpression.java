@@ -16,7 +16,13 @@ public abstract class AbstractFilterExpression implements FilterExpression {
 
 	protected String filterKey;
 	protected Bean bean;
-	protected final List<FilterExpression> expressions = new ArrayList<FilterExpression>(5);
+	final private List<FilterExpression> expressionsList = new ArrayList<FilterExpression>(5);
+	/**
+	 * array is used for performance reason, during the test with 1 million
+	 * records it is found that array iteration is roughly 2 times faster than
+	 * List.
+	 */
+	FilterExpression[] expressions = null;
 	
 	@Override
 	public String getFilterKey() {
@@ -29,7 +35,11 @@ public abstract class AbstractFilterExpression implements FilterExpression {
 	}
 
 	public void addExpression(FilterExpression expression) {
-		expressions.add(expression);
+		expressionsList.add(expression);
+		expressions = expressionsList.toArray(new FilterExpression[expressionsList.size()]);
 	}
-
+	
+	FilterExpression[] getExpressions() {
+		return expressions;
+	}
 }

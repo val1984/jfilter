@@ -4,9 +4,7 @@ import gk.jfilter.impl.filter.bean.Bean;
 import gk.jfilter.impl.filter.comparator.SimpleTypeComparator;
 import gk.jfilter.impl.filter.parser.Operator;
 
-import java.util.Arrays;
-
-public class SimpleFilterExpression extends AbstractFilterExpression {
+public class SimpleFilterExpression extends AbstractFilterExpression implements FilterExpression {
 
 	final private SimpleTypeComparator comparator = new SimpleTypeComparator();
 	private Operator operator;
@@ -30,6 +28,7 @@ public class SimpleFilterExpression extends AbstractFilterExpression {
 	}
 
 	public boolean eval(Object object) {
+		
 		if(object==null) {
 			return false;
 		}
@@ -37,8 +36,4 @@ public class SimpleFilterExpression extends AbstractFilterExpression {
 		return comparator.compare((Comparable) bean.getValue(object), this.filterValues, this.operator);
 	}
 
-	public String toString() {
-		return "SimpleFilterExpression {operator=" + operator + ", filterValue=" + Arrays.toString(filterValues) + ", expressions=" + expressions
-				+ "}";
-	}
 }
