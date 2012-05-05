@@ -14,7 +14,7 @@ public class OrFilterExpression extends AbstractFilterExpression {
 			return false;
 		}
 		
-		for (FilterExpression exp : this.expressions) {
+		for (FilterExpression exp : expressions) {
 			if (exp.eval(object) == true) {
 				return true;
 			}

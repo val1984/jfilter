@@ -164,10 +164,8 @@ public class FilterParser {
 		} else if (filterKeyBean instanceof MapBean) {
 			/** for properties which returns Map objects */
 			nextExp = new MapFilterExpression(filterKey, filterKeyBean);
-		} else if (filterKeyBean instanceof ClassBean) {
+		} else{
 			nextExp = new ClassFilterExpression(filterKey, filterKeyBean);
-		} else {
-			throw new JFilterException("Unknow filter parsing error.");
 		}
 
 		parseMap(filterValue, parameters, nextExp, filterKeyBean);
