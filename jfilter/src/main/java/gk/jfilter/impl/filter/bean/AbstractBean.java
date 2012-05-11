@@ -11,6 +11,11 @@ import java.util.Map;
 public abstract class AbstractBean implements Bean {
 	protected Method readMethod;
 	protected Class<?> type;
+	/** for map type bean */
+	protected Class<?> keyType;
+	/** for map, collection and array type bean */
+	protected Class<?> valueType;
+	
 	protected Map<String, Bean> properties = new HashMap<String, Bean>();
 	protected Bean parent;
 	Map<String, Method> methods = new HashMap<String, Method>();
@@ -58,6 +63,16 @@ public abstract class AbstractBean implements Bean {
 	@Override
 	public Class<?> getType() {
 		return type;
+	}
+	
+	@Override
+	public Class<?> getKeyType() {
+		return keyType;
+	}
+	
+	@Override
+	public Class<?> getValueType() {
+		return valueType;
 	}
 
 	@Override
@@ -133,4 +148,5 @@ public abstract class AbstractBean implements Bean {
 		}
 		return false;
 	}
+	
 }

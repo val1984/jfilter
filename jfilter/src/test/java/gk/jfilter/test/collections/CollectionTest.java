@@ -52,7 +52,7 @@ public class CollectionTest {
 	public void testLegs() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'legs':'?1'}", 4));
+		List<Animal> fa = filter.filter("{'legs':'?1'}", 4).out(new ArrayList<Animal>());
 		assertEquals(7,fa.size());
 	}
 	
@@ -63,7 +63,7 @@ public class CollectionTest {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("type", "cat");
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'type':'?type'}", parameters));
+		List<Animal> fa = filter.filter("{'type':'?type'}", parameters).out(new ArrayList<Animal>());
 		assertEquals(4,fa.size());
 	}
 	
@@ -74,7 +74,7 @@ public class CollectionTest {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("type", "dog");
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'type':'?type'}", parameters));
+		List<Animal> fa = filter.filter("{'type':'?type'}", parameters).out(new ArrayList<Animal>());
 		assertEquals(3,fa.size());
 	}
 	
@@ -85,7 +85,7 @@ public class CollectionTest {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("type", "cat");
 
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'children.type':'?type'}", parameters));
+		List<Animal> fa = filter.filter("{'children.type':'?type'}", parameters).out(new ArrayList<Animal>());
 		assertEquals(1,fa.size());
 	}
 	
@@ -96,7 +96,7 @@ public class CollectionTest {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("class", "gk.jfilter.test.common.model.Cat");
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'class.name':'?class'}", parameters));
+		List<Animal> fa = filter.filter("{'class.name':'?class'}", parameters).out(new ArrayList<Animal>());
 		assertEquals(4,fa.size());
 	}
 	
@@ -107,7 +107,7 @@ public class CollectionTest {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("class", "gk.jfilter.test.common.model.Cat");
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'class.name.toString':'?class'}", parameters));
+		List<Animal> fa = filter.filter("{'class.name.toString':'?class'}", parameters).out(new ArrayList<Animal>());
 		assertEquals(4,fa.size());
 	}
 

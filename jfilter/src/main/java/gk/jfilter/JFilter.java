@@ -8,8 +8,6 @@ import gk.jfilter.impl.mr.m.Mapper;
 import gk.jfilter.impl.mr.r.Reducer;
 
 import java.beans.IntrospectionException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -88,42 +86,6 @@ public class JFilter<T> {
 		}
 	}
 
-	/**
-	 * Executes filter with array of parameter values. Parameters are given as
-	 * "?1", "?2" etc in the filter, starting from "?1" to "?n" where n is
-	 * integer. Parameter values are are picked from corresponding argument
-	 * position in the variable arguments.
-	 * 
-	 * @param filter
-	 *            filter in json format.
-	 * @param parameters
-	 *            filter parameters are given in key value form where key is
-	 *            string given in filter in "?string" format and value is object
-	 *            of matching property class of collection bean. $in and $nin
-	 *            values are given as List.
-	 * @return filtered collection.
-	 */
-	public List<T> execute(String filter, Object... parameters) {
-		return execute(filter, getParameterMap(parameters));
-	}
-
-	/**
-	 * Executes filter with map of parameter values. filter parameter values are
-	 * given in key value form where key is string given in filter in "?string"
-	 * format and value is a object of same class as of bean property. $in and
-	 * $nin values are given as List of objects.
-	 * 
-	 * @param filter
-	 *            Json filter string e.g. "{'id':'?id'}"
-	 * @param parameters
-	 *            Map of parameter values, e.g. key="id", value=object.
-	 * @return filtered collection.
-	 */
-	public List<T> execute(String filter, Map<String, ?> parameters) {
-		FilterExpression filterExp = filterParser.parse(filter, parameters);
-		return execute(iterable.iterator(), filterExp);
-	}
-
 	private List<T> execute(Iterator<T> itr, FilterExpression filterExp) {
 		result = new ArrayList<T>();
 
@@ -186,7 +148,7 @@ public class JFilter<T> {
 	 */
 	public T getFirst() {
 		checkState();
-		if (result.get(0) != null) {
+		if (result.get(0) == null) {
 			return null;
 		} else {
 			return result.get(0);

@@ -38,7 +38,7 @@ public class Main {
 		Map<String, Integer> parameters = new HashMap<String, Integer>();
 		parameters.put("code", 5);
 		
-		Collection<Product> fp = filter.execute("{'code':'?code'}", parameters);
+		List<Product> fp = filter.filter("{'code':'?code'}", parameters).out(new ArrayList<Product>());
 		
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
@@ -60,7 +60,7 @@ public class Main {
 		codes.add(100);
 		parameters.put("codes", codes);
 		
-		Collection<Product> fp = filter.execute("{'code': {'$in':'?codes'}}", parameters);
+		List<Product> fp = filter.filter("{'code': {'$in':'?codes'}}", parameters).out(new ArrayList<Product>());
 		
 		long etime = System.currentTimeMillis();
 		for (Product p : fp) {
@@ -82,7 +82,8 @@ public class Main {
 		parameters.put("code", 5);
 		parameters.put("price", 60);
 		
-		Collection<Product> fp = filter.execute("{ '$and':[{'code': '?code'}, {'skus.price':{'$le':'?price'}}]}", parameters);
+		List<Product> fp = filter.filter("{ '$and':[{'code': '?code'}, {'skus.price':{'$le':'?price'}}]}", parameters)
+				                       .out(new ArrayList<Product>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -105,7 +106,8 @@ public class Main {
 		parameters.put("price1", 60);
 		parameters.put("price2", 500);
 		
-		Collection<Product> fp = filter.execute("{'skus': { '$or': [{'price':{'$le':'?price1'}}, {'price':'?price2'}]}}", parameters);
+		List<Product> fp = filter.filter("{'skus': { '$or': [{'price':{'$le':'?price1'}}, {'price':'?price2'}]}}", parameters)
+									   .out(new ArrayList<Product>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -131,7 +133,8 @@ public class Main {
 		parameters.put("prices", prices);
 		parameters.put("skuCode", "RedApple");
 		
-		Collection<Product> fp = filter.execute("{'skus': {'$and':[{'price':{'$in':'?prices'}}, {'code':'?skuCode'}]}}", parameters);
+		List<Product> fp = filter.filter("{'skus': {'$and':[{'price':{'$in':'?prices'}}, {'code':'?skuCode'}]}}", parameters)
+									   .out(new ArrayList<Product>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -158,8 +161,8 @@ public class Main {
 		parameters.put("skuCode", "RedApple");
 		parameters.put("code", 5);
 		
-		Collection<Product> fp = filter
-				.execute("{'$and':[{'code':'?code'},{'skus': {'$and':[{'price':{'$in':'?prices'}}, {'code':'?skuCode'}]}}]}", parameters);
+		List<Product> fp = filter.filter("{'$and':[{'code':'?code'},{'skus': {'$and':[{'price':{'$in':'?prices'}}, {'code':'?skuCode'}]}}]}", parameters)
+									   .out(new ArrayList<Product>());
 		
 		long etime = System.currentTimeMillis();
 		

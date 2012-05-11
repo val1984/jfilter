@@ -3,6 +3,7 @@ package gk.jfilter.test.datatype;
 import static org.junit.Assert.assertEquals;
 import gk.jfilter.JFilter;
 import gk.jfilter.impl.filter.parser.Operator;
+import gk.jfilter.test.common.model.Animal;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -36,49 +37,37 @@ public class DataTypesTest {
 	@Test
 	public void testString() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'stringVar':'?1'}", "string"));
-		assertEquals(fdummies.get(0).getStringVar(), "string");
+		assertEquals(filter.filter("{'stringVar':'?1'}", "string").getFirst().getStringVar(), "string");
 	}
 	
 	@Test
 	public void testEnum() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'enumVar':'?1'}", Operator.$and));
-		assertEquals(fdummies.get(0).getEnumVar(), Operator.$and);
+		assertEquals(filter.filter("{'enumVar':'?1'}", Operator.$and).getFirst().getEnumVar(), Operator.$and);
 	}
 	
 	@Test
 	public void testJavaUtilDate() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'javaUtilDateVar':{'$gt':'?1'}}", new Date(System.currentTimeMillis()-1000)));
-		assertEquals(fdummies.get(0).getId(), 1);
+		assertEquals(filter.filter("{'javaUtilDateVar':{'$gt':'?1'}}", new Date(System.currentTimeMillis()-1000)).getFirst().getId(), 1);
 	}
 	
 	@Test
 	public void testJavaSqlDate() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'javaSqlDateVar':{'$gt':'?1'}}", new Date(System.currentTimeMillis()-1000)));
-		assertEquals(fdummies.get(0).getId(), 1);
+		assertEquals(filter.filter("{'javaSqlDateVar':{'$gt':'?1'}}", new Date(System.currentTimeMillis()-1000)).getFirst().getId(), 1);
 	}
 	
 	@Test
 	public void testUuid() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-		
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'uuid':'?1'}", uuid));
-		assertEquals(fdummies.get(0).getId(), 1);
+		assertEquals(filter.filter("{'uuid':'?1'}", uuid).getFirst().getId(), 1);
 	}
 	
 	@Test
 	public void testSqlTimestamp() {
 		JFilter<Dummy> filter = new JFilter<Dummy>(dummies, Dummy.class);
-				
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'javaSqlTimestampVar':{'$gt':'?1'}}", new Timestamp(System.currentTimeMillis()-1000)));
-		assertEquals(fdummies.get(0).getId(), 1);
+		assertEquals(filter.filter("{'javaSqlTimestampVar':{'$gt':'?1'}}", new Timestamp(System.currentTimeMillis()-1000)).getFirst().getId(), 1);
 	}
 	
 	@Test
@@ -87,8 +76,7 @@ public class DataTypesTest {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date(System.currentTimeMillis()-1000));
 		
-		List<Dummy> fdummies = new ArrayList<Dummy>(filter.execute("{'calendarVar':{'$gt':'?1'}}", calendar));
-		assertEquals(fdummies.get(0).getId(), 1);
+		assertEquals(filter.filter("{'calendarVar':{'$gt':'?1'}}", calendar).getFirst().getId(), 1);
 	}
 
 	public static class Dummy {

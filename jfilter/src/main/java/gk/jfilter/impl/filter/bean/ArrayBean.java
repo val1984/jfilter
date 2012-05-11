@@ -7,7 +7,8 @@ public class ArrayBean extends AbstractBean {
 
 	public ArrayBean(Class<?> type, Method readMethod, Bean parent) throws IntrospectionException {
 		super(type, readMethod, parent);
-		if (type.getComponentType().isPrimitive() || Comparable.class.isAssignableFrom(type.getComponentType())) {
+		valueType = type.getComponentType(); 
+		if (valueType.isPrimitive() || Comparable.class.isAssignableFrom(valueType)) {
 			properties.put("get", new SimpleBean(type.getComponentType(), this));
 		}
 	}

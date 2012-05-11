@@ -17,8 +17,8 @@ public class MapBean extends AbstractBean {
 		
 		Type t = readMethod.getGenericReturnType();
 		if (t instanceof ParameterizedType) {
-			Class<?> keyType = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
-			Class<?> valueType = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[1];
+			keyType = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
+			valueType = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[1];
 			
 			PropertyDescriptor pds[] = Introspector.getBeanInfo(Map.Entry.class).getPropertyDescriptors();
 			
