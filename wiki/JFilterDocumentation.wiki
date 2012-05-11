@@ -34,9 +34,9 @@ Collection<Pet> dogs = jfilter.execute("{'type':'?type'}", parameters);
 }}}
 
 == Sample programs ==
- * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/simple/Simple.java Simple sample]
- * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/product Product sample]
- * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/sample/salesorder Sales order sample]
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/simple/Simple.java Simple sample]
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/product Product sample]
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/salesorder Sales order sample]
 
 == How to write json filter ==
 
