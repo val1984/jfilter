@@ -27,7 +27,7 @@ public class StringOperatorTest {
 	public void testEQ() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$sw':'?1'}}", "dog"));
+		List<Animal> fa = filter.filter("{'name':{'$sw':'?1'}}", "dog").out(new ArrayList<Animal>());
 		assertEquals(2,fa.size());
 	}
 	
@@ -35,7 +35,7 @@ public class StringOperatorTest {
 	public void testNE() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$ne':'?1'}}", "dog1"));
+		List<Animal> fa = filter.filter("{'name':{'$ne':'?1'}}", "dog1").out(new ArrayList<Animal>());
 		assertEquals(3,fa.size());
 	}
 	
@@ -43,7 +43,7 @@ public class StringOperatorTest {
 	public void testGT() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$gt':'?1'}}", "dog1"));
+		List<Animal> fa = filter.filter("{'name':{'$gt':'?1'}}", "dog1").out(new ArrayList<Animal>());
 		assertEquals(1,fa.size());
 	}
 	
@@ -51,7 +51,7 @@ public class StringOperatorTest {
 	public void testGE() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$ge':'?1'}}", "dog1"));
+		List<Animal> fa = filter.filter("{'name':{'$ge':'?1'}}", "dog1").out(new ArrayList<Animal>());
 		assertEquals(2,fa.size());
 	}
 	
@@ -59,7 +59,7 @@ public class StringOperatorTest {
 	public void testLT() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$lt':'?1'}}", "dog1"));
+		List<Animal> fa = filter.filter("{'name':{'$lt':'?1'}}", "dog1").out(new ArrayList<Animal>());
 		assertEquals(2,fa.size());
 	}
 	
@@ -67,7 +67,7 @@ public class StringOperatorTest {
 	public void testLE() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$le':'?1'}}", "dog1"));
+		List<Animal> fa = filter.filter("{'name':{'$le':'?1'}}", "dog1").out(new ArrayList<Animal>());
 		assertEquals(3,fa.size());
 	}
 	
@@ -75,7 +75,7 @@ public class StringOperatorTest {
 	public void testSW() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$sw':'?1'}}", "cat"));
+		List<Animal> fa = filter.filter("{'name':{'$sw':'?1'}}", "cat").out(new ArrayList<Animal>());
 		assertEquals(2,fa.size());
 	}
 	
@@ -83,7 +83,7 @@ public class StringOperatorTest {
 	public void testEW() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name':{'$ew':'?1'}}", "1"));
+		List<Animal> fa = filter.filter("{'name':{'$ew':'?1'}}", "1").out(new ArrayList<Animal>());
 		assertEquals(2,fa.size());
 	}
 	
@@ -91,7 +91,7 @@ public class StringOperatorTest {
 	public void testCTS() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		List<Animal> fa = new ArrayList<Animal>(filter.execute("{'name.toString':{'$cts':'?1'}}", "a"));
+		List<Animal> fa = filter.filter("{'name.toString':{'$cts':'?1'}}", "a").out(new ArrayList<Animal>());
 		assertEquals(2,fa.size());
 	}
 	

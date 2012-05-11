@@ -50,8 +50,8 @@ public class Random {
 	public void testMother() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		assertEquals(2,filter.execute("{'mother.color':'?1'}", "black").size());
-		assertEquals(3,filter.execute("{'mother.color':'?1'}", "white").size());
+		assertEquals(2,filter.filter("{'mother.color':'?1'}", "black").out(new ArrayList<Animal>()).size());
+		assertEquals(3,filter.filter("{'mother.color':'?1'}", "white").out(new ArrayList<Animal>()).size());
 	}
 	
 }

@@ -95,7 +95,7 @@ public class Main {
 
 		long stime = System.currentTimeMillis();
 				
-		Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?1'}}", 5L);
+		List<SalesOrder> fc = filter.filter("{ 'id':{'$le':'?1'}}", 5L).out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -114,7 +114,7 @@ public class Main {
 
 		long stime = System.currentTimeMillis();
 				
-		Collection<SalesOrder> fc = filter.execute("{ 'id':{'$le':'?1'}}", 10L);
+		List<SalesOrder> fc = filter.filter("{ 'id':{'$le':'?1'}}", 10L).out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -136,7 +136,7 @@ public class Main {
 		ids.add(0L);
 		ids.add(100L);
 		
-		Collection<SalesOrder> fc = filter.execute("{ 'id': {'$in':'?1'}}", ids);
+		List<SalesOrder> fc = filter.filter("{ 'id': {'$in':'?1'}}", ids).out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -155,7 +155,7 @@ public class Main {
 		JFilter<SalesOrder> filter = new JFilter<SalesOrder>(orders, SalesOrder.class);
 		long stime = System.currentTimeMillis();
 		
-		Collection<SalesOrder> fc = filter.execute("{'lineItems.lineAmount':'?1'}", 1F);
+		List<SalesOrder> fc = filter.filter("{'lineItems.lineAmount':'?1'}", 1F).out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -179,7 +179,8 @@ public class Main {
 		parameters.put("id", 0L);
 		parameters.put("city", "DEL");
 		
-		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id': '?id'}, {'billingAddress.city':'?city'}]}", parameters);
+		List<SalesOrder> fc = filter.filter("{ '$and':[{'id': '?id'}, {'billingAddress.city':'?city'}]}", parameters)
+									.out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -202,7 +203,7 @@ public class Main {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("line", "line3");
 		
-		Collection<SalesOrder> fc = filter.execute("{'billingAddress.lines':'?line'}", parameters);
+		List<SalesOrder> fc = filter.filter("{'billingAddress.lines':'?line'}", parameters).out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -226,7 +227,8 @@ public class Main {
 		parameters.put("id", 0L);
 		parameters.put("lineAmount", 10F);
 		
-		Collection<SalesOrder> fc = filter.execute("{ '$and':[{'id':'?id'}, {'lineItems.lineAmount':'?lineAmount'}]}", parameters);
+		List<SalesOrder> fc = filter.filter("{ '$and':[{'id':'?id'}, {'lineItems.lineAmount':'?lineAmount'}]}", parameters)
+											.out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		
@@ -250,7 +252,8 @@ public class Main {
 		parameters.put("taxCode", "GST");
 		parameters.put("taxValue", 1.01F);
 		
-		Collection<SalesOrder> fc = filter.execute("{'lineItems.taxes':{ 'key':{'code':'?taxCode'}, 'value':{'$gt': '?taxValue'}}}", parameters);
+		List<SalesOrder> fc = filter.filter("{'lineItems.taxes':{ 'key':{'code':'?taxCode'}, 'value':{'$gt': '?taxValue'}}}", parameters)
+									.out(new ArrayList<SalesOrder>());
 		
 		long etime = System.currentTimeMillis();
 		

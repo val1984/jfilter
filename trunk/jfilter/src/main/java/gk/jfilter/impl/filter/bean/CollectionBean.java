@@ -16,11 +16,11 @@ public class CollectionBean extends AbstractBean {
 		if (t instanceof ParameterizedType) {
 			Type actualType = ((ParameterizedType) t).getActualTypeArguments()[0];
 			if (actualType instanceof Class) {
-				Class<?> actualClass = (Class<?>) actualType;
-				if (actualClass.isPrimitive() || Comparable.class.isAssignableFrom(actualClass)) {
-					properties.put("get", new SimpleBean(actualClass, this));
+				valueType = (Class<?>) actualType;
+				if (valueType.isPrimitive() || Comparable.class.isAssignableFrom(valueType)) {
+					properties.put("get", new SimpleBean(valueType, this));
 				} else {
-					addMethods(actualClass);
+					addMethods(valueType);
 				}
 			}
 		} else {

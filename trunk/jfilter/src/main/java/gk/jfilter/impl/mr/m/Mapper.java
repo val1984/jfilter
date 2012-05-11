@@ -1,6 +1,8 @@
 package gk.jfilter.impl.mr.m;
 
 import gk.jfilter.impl.filter.bean.Bean;
+import gk.jfilter.impl.filter.expression.ArrayFilterExpression;
+import gk.jfilter.impl.filter.expression.CollectionFilterExpression;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,7 +61,13 @@ public class Mapper {
 		if (mapper != null) {
 			return mapper.getType();
 		} else {
-			return bean.getType();
+			if (bean.getType().isArray()) {
+				return bean.getValueType();
+			} else if (Collection.class.isAssignableFrom(bean.getType())) {
+				return bean.getValueType();
+			} else {
+				return bean.getType();
+			}
 		}
 	}
 
