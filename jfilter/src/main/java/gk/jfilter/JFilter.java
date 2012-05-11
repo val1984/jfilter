@@ -4,8 +4,12 @@ import gk.jfilter.impl.filter.bean.Bean;
 import gk.jfilter.impl.filter.bean.QueryBean;
 import gk.jfilter.impl.filter.expression.FilterExpression;
 import gk.jfilter.impl.filter.parser.FilterParser;
+import gk.jfilter.impl.mr.m.Mapper;
+import gk.jfilter.impl.mr.r.Reducer;
 
 import java.beans.IntrospectionException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,7 +48,7 @@ import java.util.Map;
  * @author Kamran Ali Khan (khankamranali@gmail.com)
  * 
  */
-public class JFilter<T> implements Iterable<T> {
+public class JFilter<T> {
 	private Bean bean;
 	private FilterParser filterParser;
 
@@ -120,20 +124,6 @@ public class JFilter<T> implements Iterable<T> {
 		return execute(iterable.iterator(), filterExp);
 	}
 
-	/**
-	 * Returns first element of the filtered values.
-	 * 
-	 * @return First element of the filtered values.
-	 */
-	public T getFirst() {
-		checkState();
-		if (result.get(0) != null) {
-			return null;
-		} else {
-			return result.get(0);
-		}
-	}
-
 	private List<T> execute(Iterator<T> itr, FilterExpression filterExp) {
 		result = new ArrayList<T>();
 
@@ -189,15 +179,83 @@ public class JFilter<T> implements Iterable<T> {
 		return this;
 	}
 
-	@Override
-	public Iterator<T> iterator() {
+	/**
+	 * Returns first element of the filtered values.
+	 * 
+	 * @return First element of the filtered values.
+	 */
+	public T getFirst() {
 		checkState();
-		return result.iterator();
+		if (result.get(0) != null) {
+			return null;
+		} else {
+			return result.get(0);
+		}
 	}
 
-	public <U extends Collection<T>> U into(U collection) {
-		collection.addAll(result);
-		return collection;
+	@SuppressWarnings("unchecked")
+	public <U> JFilter<U> map(String property) {
+		List<U> list = new ArrayList<U>();
+		Mapper mapper = Mapper.parse(bean, property);
+		for (T o : result) {
+			mapper.map(o, list);
+		}
+		return new JFilter<U>(list, (Class<U>) mapper.getType());
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public T max() {
+		if (Comparable.class.isAssignableFrom(bean.getType())) {
+			throw new JFilterException("Reduce function on type: " + bean.getType() + " is not supported.");
+		}
+
+		return (T) Reducer.max((Iterable<Comparable>) iterable);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public T min() {
+		if (Comparable.class.isAssignableFrom(bean.getType())) {
+			throw new JFilterException("Reduce function on type: " + bean.getType() + " is not supported.");
+		}
+
+		return (T) Reducer.min((Iterable<Comparable>) iterable);
+	}
+
+	@SuppressWarnings("unchecked")
+	public T sum() {
+		if (Number.class.isAssignableFrom(bean.getType())) {
+			throw new JFilterException("Reduce function on type: " + bean.getType() + " is not supported.");
+		}
+		return (T) Reducer.sum((Iterable<Number>) iterable);
+	}
+
+	public int count() {
+		return Reducer.count(iterable);
+	}
+
+	/**
+	 * e.g. {'id'}, {'id':'desc'}, {'id', 'skus.price'}
+	 * 
+	 * @param property
+	 * @return
+	 */
+	public JFilter<T> sortBy(String property) {
+		throw new UnsupportedOperationException("Not yet implemented.");
+	}
+
+	public <U extends Collection<T>> U out(U c) {
+		if (result != null) {
+			c.addAll(result);
+		} else {
+			for (T t : iterable) {
+				c.add(t);
+			}
+		}
+		return c;
+	}
+
+	public void out(Map<?, ?> c) {
+		throw new UnsupportedOperationException("Not yet implemented.");
 	}
 
 	private void checkState() {
@@ -217,42 +275,4 @@ public class JFilter<T> implements Iterable<T> {
 		return map;
 	}
 
-	public JFilter<T> map(String select) {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-	
-	public Number max() {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-	
-	public Number min() {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-	
-	public Number sum() {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-	
-	public Number avg() {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-	
-	/**
-	 * e.g. {'id'}, {'id':'desc'}, {'id', 'skus.price'}
-	 * @param property
-	 * @return
-	 */
-	public JFilter<T> sortBy(String property) {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-	
-	public Collection out(Collection c) {
-		c.addAll(result);
-		return c;
-	}
-	
-	public void out(Map<?,?> c) {
-		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-	
 }
