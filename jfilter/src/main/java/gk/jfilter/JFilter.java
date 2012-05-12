@@ -4,6 +4,7 @@ import gk.jfilter.impl.filter.bean.Bean;
 import gk.jfilter.impl.filter.bean.QueryBean;
 import gk.jfilter.impl.filter.expression.FilterExpression;
 import gk.jfilter.impl.filter.parser.FilterParser;
+import gk.jfilter.impl.mr.m.MapParser;
 import gk.jfilter.impl.mr.m.Mapper;
 import gk.jfilter.impl.mr.r.Reducer;
 
@@ -49,10 +50,8 @@ import java.util.Map;
 public class JFilter<T> {
 	private Bean bean;
 	private FilterParser filterParser;
-
 	/** Supported collection types */
 	private Iterable<T> iterable;
-	private List<T> result;
 
 	/**
 	 * 
@@ -72,9 +71,10 @@ public class JFilter<T> {
 	 * @param iterable
 	 * @param bean
 	 */
-	private JFilter(Iterable<T> iterable, Bean bean) {
+	private JFilter(Iterable<T> iterable, Bean bean, FilterParser filterParser) {
 		this.iterable = iterable;
 		this.bean = bean;
+		this.filterParser = filterParser;
 	}
 
 	private void init(Class<T> klass) {
@@ -87,7 +87,7 @@ public class JFilter<T> {
 	}
 
 	private List<T> execute(Iterator<T> itr, FilterExpression filterExp) {
-		result = new ArrayList<T>();
+		List<T> result = new ArrayList<T>();
 
 		while (itr.hasNext()) {
 			T o = itr.next();
@@ -116,8 +116,7 @@ public class JFilter<T> {
 	 */
 	public JFilter<T> filter(String filter, Map<String, ?> parameters) {
 		FilterExpression filterExp = filterParser.parse(filter, parameters);
-		execute(iterable.iterator(), filterExp);
-		return new JFilter<T>(result, bean);
+		return new JFilter<T>(execute(iterable.iterator(), filterExp), bean, filterParser);
 	}
 
 	/**
@@ -137,8 +136,7 @@ public class JFilter<T> {
 	 * @return filtered values.
 	 */
 	public JFilter<T> filter(String filter, Object... parameters) {
-		filter(filter, getParameterMap(parameters));
-		return this;
+		return filter(filter, getParameterMap(parameters));
 	}
 
 	/**
@@ -147,19 +145,14 @@ public class JFilter<T> {
 	 * @return First element of the filtered values.
 	 */
 	public T getFirst() {
-		checkState();
-		if (result.get(0) == null) {
-			return null;
-		} else {
-			return result.get(0);
-		}
+		return iterable.iterator().next();
 	}
 
 	@SuppressWarnings("unchecked")
 	public <U> JFilter<U> map(String property) {
 		List<U> list = new ArrayList<U>();
-		Mapper mapper = Mapper.parse(bean, property);
-		for (T o : result) {
+		Mapper mapper = MapParser.parse(bean, property);
+		for (T o : iterable) {
 			mapper.map(o, list);
 		}
 		return new JFilter<U>(list, (Class<U>) mapper.getType());
@@ -205,25 +198,15 @@ public class JFilter<T> {
 		throw new UnsupportedOperationException("Not yet implemented.");
 	}
 
-	public <U extends Collection<T>> U out(U c) {
-		if (result != null) {
-			c.addAll(result);
-		} else {
-			for (T t : iterable) {
-				c.add(t);
-			}
+	public <U extends Collection<T>> U out(U collection) {
+		for (T o : iterable) {
+			collection.add(o);
 		}
-		return c;
+		return collection;
 	}
 
 	public void out(Map<?, ?> c) {
 		throw new UnsupportedOperationException("Not yet implemented.");
-	}
-
-	private void checkState() {
-		if (result == null) {
-			throw new IllegalStateException("First call filter method.");
-		}
 	}
 
 	private Map<String, Object> getParameterMap(Object... parameters) {
