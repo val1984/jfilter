@@ -12,7 +12,7 @@ import java.util.List;
  * @author Kamran Ali Khan (khankamranali@gmail.com)
  * 
  */
-public class Simple {
+public class SimpleFilterMain {
 
 	public static final List<String> animals = Arrays.asList("dog", "cat", "rat", "Lion", "tiger", " elephant ");
 

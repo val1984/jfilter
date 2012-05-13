@@ -18,14 +18,23 @@ public class SimpleMapReduceMain {
 		}
 
 		JFilter<Product> filter = new JFilter<Product>(products, Product.class);
+		
+		/** Select Skus where product code is less than equals to 5 and Sku price is 30. */
 		List<Sku> skus = filter.filter("{'code':{'$le':'?1'}}", 5).<Sku> map("skus").filter("{'price':'?1'}", 30).out(new ArrayList<Sku>());
 
+		/** Select prices of Skus where product code is less than equals to 5. */
 		List<Integer> prices = filter.filter("{'code':{'$le':'?1'}}", 5).<Integer> map("skus.price").out(new ArrayList<Integer>());
 
+		/** Select Skus where sku price is less than equals to 10.m */
 		filter.<Sku> map("skus").filter("{'price':{'$le':'?1'}}", 10).out(skus);
 
+		/** Select max price of Skus where product code is less than equals to 5.*/
 		Integer max = filter.filter("{'code':{'$le':'?1'}}", 5).<Integer> map("skus.price").max();
+		
+		/** Select min price of Skus where product code is less than equals to 5.*/
 		Integer min = filter.filter("{'code':{'$le':'?1'}}", 5).<Integer> map("skus.price").min();
+		
+		/** Select sum of  prices of Skus where product code is less than equals to 5.*/
 		Integer sum = filter.filter("{'code':{'$le':'?1'}}", 5).<Integer> map("skus.price").sum();
 		
 	}
