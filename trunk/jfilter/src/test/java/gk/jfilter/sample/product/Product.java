@@ -7,7 +7,6 @@ public class Product {
 
 	private List<Sku> skus = new ArrayList<Sku>();
 	private int code;
-	private int price;
 
 	public Product() {}
 	
@@ -36,9 +35,4 @@ public class Product {
 		return "Product {code="+code+", skus=" + skus + "}";
 	}
 
-	@Override
-	public Product clone() {
-		Product clone = new Product(this.code);
-		return clone;
-	}
 }
