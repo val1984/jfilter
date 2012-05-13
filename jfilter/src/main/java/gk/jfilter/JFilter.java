@@ -148,6 +148,15 @@ public class JFilter<T> {
 		return iterable.iterator().next();
 	}
 
+	/**
+	 * Selects given property from the collection and creates new JFilter
+	 * object.
+	 * 
+	 * @param property
+	 *            property/method name of the bean, dot notation should be used
+	 *            for inner properties e.g. "sku.price".
+	 * @return JFilter
+	 */
 	@SuppressWarnings("unchecked")
 	public <U> JFilter<U> map(String property) {
 		List<U> list = new ArrayList<U>();
@@ -158,6 +167,14 @@ public class JFilter<T> {
 		return new JFilter<U>(list, (Class<U>) mapper.getType());
 	}
 
+	/**
+	 * Returns maximum object from the collection, bean class should implement
+	 * Comparable interface.
+	 * 
+	 * @return Maximum object from the collection.
+	 * @throws JFilterException
+	 *             if bean class does not implement Comparable interface.
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T max() {
 		if (Comparable.class.isAssignableFrom(bean.getType())) {
@@ -167,6 +184,14 @@ public class JFilter<T> {
 		return (T) Reducer.max((Iterable<Comparable>) iterable);
 	}
 
+	/**
+	 * Returns minimum object from the collection, bean class should implement
+	 * Comparable interface.
+	 * 
+	 * @return Minimum object from the collection.
+	 * @throws JFilterException
+	 *             if bean class does not implement Comparable interface.
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T min() {
 		if (Comparable.class.isAssignableFrom(bean.getType())) {
@@ -176,6 +201,14 @@ public class JFilter<T> {
 		return (T) Reducer.min((Iterable<Comparable>) iterable);
 	}
 
+	/**
+	 * Returns sum of numbers in the collection, bean class should extends Number
+	 * abstract class, e.g. Integer, Float, Double, BigInteger, BigDecimal etc.
+	 * 
+	 * @return Minimum object from the collection.
+	 * @throws JFilterException
+	 *             if bean class does not extends Number class.
+	 */
 	@SuppressWarnings("unchecked")
 	public T sum() {
 		if (Number.class.isAssignableFrom(bean.getType())) {
@@ -183,6 +216,15 @@ public class JFilter<T> {
 		}
 		return (T) Reducer.sum((Iterable<Number>) iterable);
 	}
+
+	/**
+	 * Returns number of element in the collection.
+	 * abstract class, e.g. Integer, Float, Double, BigInteger, BigDecimal etc.
+	 * 
+	 * @return Minimum object from the collection.
+	 * @throws JFilterException
+	 *             if bean class does not implement Comparable interface.
+	 */
 
 	public int count() {
 		return Reducer.count(iterable);
@@ -197,6 +239,14 @@ public class JFilter<T> {
 	public JFilter<T> sortBy(String property) {
 		throw new UnsupportedOperationException("Not yet implemented.");
 	}
+
+	/**
+	 * Populates a given collection with the filter, map result. You need to call this method after filter or map method to collect the result.
+	 * 
+	 * @return Minimum object from the collection.
+	 * @throws JFilterException
+	 *             if bean class does not implement Comparable interface.
+	 */
 
 	public <U extends Collection<T>> U out(U collection) {
 		for (T o : iterable) {
