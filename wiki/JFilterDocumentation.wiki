@@ -33,6 +33,11 @@ parameters.put("type", "DOG");
 Collection<Pet> dogs = jfilter.execute("{'type':'?type'}", parameters);
 }}}
 
+== Javadocs ==
+
+[http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/JFilter.java JFilter]
+
+
 == Sample programs ==
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/simple/Simple.java Simple sample]
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/product Product sample]
@@ -104,7 +109,3 @@ See in the following example getClass() method of Object class is used in a filt
 
 Example:
  `{'getClass.getName':'eg.MyClass'}` - filter collection where class name is `"eg.MyClass".`
-
-== Javadocs ==
-
-[http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/JFilter.java JFilter]
