@@ -21,7 +21,7 @@ Collection<Pet> pets = new ArrayList<Pet>();
 //populate pets collection
 
 JFilter jfilter = new JFilter(pets, Pet.class);
-Collection<Pet> cats = filter.execute("{'type':'?1'}", "CAT");
+Collection<Pet> cats = filter.filter("{'type':'?1'}", "CAT").out(new ArrayList<Pet>());
  
 Collection<Pet> pets = new ArrayList<Pet>();
 //populate pets collection
@@ -31,10 +31,10 @@ JFilter jfilter = new JFilter(pets, Pet.class);
 Map<String, ?> parameters = new HashMap<String,String>();
 
 parameters.put("type", "CAT"); 
-Collection<Pet> cats = jfilter.execute("{'type':'?type'}", parameters);
+Collection<Pet> cats = jfilter.filter("{'type':'?type'}", parameters).out(new ArrayList<Pet>());
  
 parameters.put("type", "DOG"); 
-Collection<Pet> dogs = jfilter.execute("{'type':'?type'}", parameters);
+Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new ArrayList<Pet>());
 }}}
 
 == Sample programs ==
