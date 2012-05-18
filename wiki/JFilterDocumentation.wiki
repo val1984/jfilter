@@ -13,7 +13,9 @@ Please note that word query and filter is used interchangeably in this document.
 [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/JFilter.java JFilter]
 
 == Overview ==
-JFIlter library has only one class [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/JFilter.java gk.jfilter.JFilter] to filter/query collections (java.util.Collection, java.util.Map or arrays). New instance of this class to be created for each collection. Then this instance can be used to execute queries multiple times on the collection.
+JFilter library has only one class [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/main/java/gk/jfilter/JFilter.java gk.jfilter.JFilter] to filter/query, map/select and reduce/aggregate objects in a collection. You should create only one instance of JFilter class for each collection object to be filtered.
+JFilter constructor has [http://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html Iterable] argument, so apart from collection you can filter any class object which implements Iterable interface.
+
 Following are different ways to execute filter.
 {{{
 
@@ -44,8 +46,8 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 
 == How to write json filter ==
 
- * Class should have getter method for a property that is specified in json filter.
- * java.util.Collection and Map type properties should be parameterized e.g. `Map<String,List<String>>`.
+ * JFilter works on methods not on object properties, so if you want to filter on properties then there should be a corresponding getter methods.
+ * java.util.Collection and java.util.Map type properties should be parameterized e.g. `Map<String,List<String>>`.
 
  * Filter can contains non property methods which are non void and has zero arguments, e.g {'toString':'?1'}.
 
