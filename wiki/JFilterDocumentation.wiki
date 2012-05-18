@@ -46,10 +46,16 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 
 == How to write json filter ==
 
- * JFilter works on methods not on object properties, so if you want to filter on properties then there should be a corresponding getter methods.
- * java.util.Collection and java.util.Map type properties should be parameterized e.g. `Map<String,List<String>>`.
+ * JFilter works on methods not on class properties, so if you want to filter on properties then there should be a corresponding getter methods.
+ * For getter properties you can either give the property name or getter method name in the json filter. For example if a class has getName() method then you can write your json query like follows. Both produce same result.
+   * {'name':'?1'}
+   * {'getName':'?1}
+ * java.util.Collection and java.util.Map type or any generic type properties should have parameterized type e.g. `Map<String,List<String>>`. JFilter ignores properties of generic type without parameterized type.
 
  * Filter can contains non property methods which are non void and has zero arguments, e.g {'toString':'?1'}.
+ * Filter string should be in proper json format. You can use single quote ' instead of double quote ".
+
+ *
 
 == Supported operators ==
 
