@@ -55,7 +55,15 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
  * Filter can contains non property methods which are non void and has zero arguments, e.g {'toString':'?1'}.
  * Filter string should be in proper json format. You can use single quote ' instead of double quote ".
 
- *
+ * $eq (equals) is a default operator in the json filters, if you do not specify any comparison operator. For example "{'name':'?1'}" filter selects objects where name=?1. You can specify other operators listed below like "{'name':{'$ne':'?1}}", it selects objects where name!=?1.
+
+ * JFilter supports properties inside properties till infinite level for example Product class can have Sku property (collection type) which again can have Price property. So if you want to filter Product objects which have a Sku price less than a given dollar. You can write json filter in following two ways, with dot (.) notation and without dot notation. For detail please see [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/product Product sample].
+  * {'skus.price':{'$le':'?1'}} 
+  * {'skus':{'price':{'$le':'?1'}}
+ 
+ * JFilter provides two special properties for Map type properties: "key" and "value". For example if you have a method Map<String, Integer> getTaxes() then you can following json filters.
+   * {'taxes.key':'?1'} -  select objects where tax key is equals to given argument.
+   * {'taxes.value':{'$le':'?1'}} - select objects where tax value is less than equals to given argument.
 
 == Supported operators ==
 
