@@ -44,6 +44,11 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/product Product sample]
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/salesorder Sales order sample]
 
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/product/SimpleMapReduceMain.java Simple MapReduce sample]
+
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/product/ProductMapReduceMain.java Product MapReduce sample]
+
+
 == How to write json filter ==
 
  * JFilter works on methods not on class properties, so if you want to filter on properties then there should be a corresponding getter methods.
