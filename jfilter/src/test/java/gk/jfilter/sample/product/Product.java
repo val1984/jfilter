@@ -7,11 +7,21 @@ public class Product {
 
 	private List<Sku> skus = new ArrayList<Sku>();
 	private int code;
-
+	private String name;
+	
 	public Product() {}
 	
 	public Product(int code) {
 		this.code = code;
+	}
+
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getCode() {
