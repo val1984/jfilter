@@ -221,10 +221,12 @@ public class FilterParser {
 		} else {
 			String s = (String) object;
 			if (s.startsWith("?")) {
-				Object o = parameters.get(s.substring(1));
-				if (o == null) {
-					throw new JFilterException("Filter parameter [" + s + "] value not given in the the parameter values [" + parameters + "]");
+				
+				if(!parameters.containsKey(s.substring(1))) {
+					throw new JFilterException("Filter parameter [" + s + "] value not given");
 				}
+				
+				Object o = parameters.get(s.substring(1));
 				if (o instanceof Collection) {
 					return ((Collection<?>) o).toArray();
 				} else {
