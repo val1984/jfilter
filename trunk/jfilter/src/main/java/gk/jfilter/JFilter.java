@@ -1,6 +1,7 @@
 package gk.jfilter;
 
 import gk.jfilter.impl.filter.bean.Bean;
+import gk.jfilter.impl.filter.bean.PrimitiveWrapper;
 import gk.jfilter.impl.filter.bean.QueryBean;
 import gk.jfilter.impl.filter.expression.FilterExpression;
 import gk.jfilter.impl.filter.parser.FilterParser;
@@ -177,7 +178,7 @@ public class JFilter<T> {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T max() {
-		if (Comparable.class.isAssignableFrom(bean.getType())) {
+		if (!Comparable.class.isAssignableFrom(PrimitiveWrapper.wrap(bean.getType()))) {
 			throw new JFilterException("Reduce function on type: " + bean.getType() + " is not supported.");
 		}
 
@@ -194,7 +195,7 @@ public class JFilter<T> {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T min() {
-		if (Comparable.class.isAssignableFrom(bean.getType())) {
+		if (!Comparable.class.isAssignableFrom(PrimitiveWrapper.wrap(bean.getType()))) {
 			throw new JFilterException("Reduce function on type: " + bean.getType() + " is not supported.");
 		}
 
@@ -211,7 +212,7 @@ public class JFilter<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	public T sum() {
-		if (Number.class.isAssignableFrom(bean.getType())) {
+		if (!Number.class.isAssignableFrom(PrimitiveWrapper.wrap(bean.getType()))) {
 			throw new JFilterException("Reduce function on type: " + bean.getType() + " is not supported.");
 		}
 		return (T) Reducer.sum((Iterable<Number>) iterable);
