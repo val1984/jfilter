@@ -54,4 +54,11 @@ public class Random {
 		assertEquals(3,filter.filter("{'mother.color':'?1'}", "white").out(new ArrayList<Animal>()).size());
 	}
 	
+	@Test
+	public void testNot() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		assertEquals(4,filter.filter("{'$not':[{'mother.color':'?1'}]}", "white").out(new ArrayList<Animal>()).size());
+		assertEquals(5,filter.filter("{'$not':[{'mother.color':'?1'}]}", "black").out(new ArrayList<Animal>()).size());
+	}
+	
 }

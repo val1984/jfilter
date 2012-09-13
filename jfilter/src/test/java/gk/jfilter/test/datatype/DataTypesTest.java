@@ -3,7 +3,6 @@ package gk.jfilter.test.datatype;
 import static org.junit.Assert.assertEquals;
 import gk.jfilter.JFilter;
 import gk.jfilter.impl.filter.parser.Operator;
-import gk.jfilter.test.common.model.Animal;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
