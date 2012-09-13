@@ -80,9 +80,9 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 || $lt || Less than || All || ||
 || $le || Less than equals to || All || ||
 || $eq || Equals to || All || ||
-|| $sw|| Same as String startsWith || String || This special operator is provided because JFilter supports methods without any arguments||
-|| $ew || Same as String endsWith || String || This special operator is provided because JFilter supports methods without any arguments||
-|| $cts || Same as String contails|| String || This special operator is provided because JFilter supports methods without any arguments||
+|| $sw|| Same as String startsWith || String || || This special operator is provided because JFilter supports methods without any arguments ||
+|| $ew || Same as String endsWith || String || || This special operator is provided because JFilter supports methods without any arguments ||
+|| $cts || Same as String contails|| String || || This special operator is provided because JFilter supports methods without any arguments ||
 || $in || In || Collection, Array and Map|| ||
 || $not || NOT || || "{'$not':[{'type':{'$in':'?type'}}]}"||
 || $and || AND || || || join operator ||
