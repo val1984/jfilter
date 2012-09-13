@@ -74,7 +74,7 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 
 == Supported operators ==
 
-|| *Operator* || *Description* || *Supported types* || *Example* ||
+|| *Operator* || *Description* || *Supported types* || *Example* || *Comment*||
 || $gt || Greater than|| All || ||
 || $ge || Greater than equals to || All || ||
 || $lt || Less than || All || ||
@@ -85,8 +85,8 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 || $cts || Same as String contails|| String || This special operator is provided because JFilter supports methods without any arguments||
 || $in || In || Collection, Array and Map|| ||
 || $not || NOT || || "{'$not':[{'type':{'$in':'?type'}}]}"||
-|| $and || AND || || ||
-|| $or || OR || || ||
+|| $and || AND || || || join operator ||
+|| $or || OR || || || join operator ||
 
 == Supported data types ==
  All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte,  Calendar, Character, java.util.Date, Float, Integer, Long, Short, String, java.sql.Time, java.sql.Timestamp, URI, UUID
