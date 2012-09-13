@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class CollectionTest {
@@ -91,16 +90,28 @@ public class CollectionTest {
 		assertEquals(1,fa.size());
 	}
 	
-	@Ignore
+	@Test
 	public void testNin() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("type", "cat");
 
-		List<Animal> fa = filter.filter("{'children.type':{'$nin':'?type'}}",     parameters).out(new ArrayList<Animal>());
-		assertEquals(1,fa.size());
+		List<Animal> fa = filter.filter("{'$not':[{'type':{'$in':'?type'}}]}",     parameters).out(new ArrayList<Animal>());
+		assertEquals(3,fa.size());
 	}
+	
+	@Test
+	public void testNin2() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("type", "cat");
+
+		List<Animal> fa = filter.filter("{'$not':[{'children.type':{'$in':'?type'}}]}",     parameters).out(new ArrayList<Animal>());
+		assertEquals(6,fa.size());
+	}
+	
 	
 	@Test
 	public void testIn() {

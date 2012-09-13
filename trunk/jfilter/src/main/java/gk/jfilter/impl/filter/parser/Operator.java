@@ -16,11 +16,11 @@ import java.util.Map;
  */
 public enum Operator {
 
-	$gt, $lt, $le, $eq, $ne, $ge, $sw, $ew, $cts, $in, $nin, $size, $exist, $and, $or;
+	$gt, $lt, $le, $eq, $ne, $ge, $sw, $ew, $cts, $in, $nin, $size, $exist, $and, $or, $not;
 
 	public static final EnumSet<Operator> COMPARATOR = EnumSet.range($gt, $exist);
-	public static final EnumSet<Operator> JOIN = EnumSet.of($and, $or);
-	public static final EnumSet<Operator> ALL = EnumSet.range($gt, $or);
+	public static final EnumSet<Operator> JOIN = EnumSet.of($and, $or, $not);
+	public static final EnumSet<Operator> ALL = EnumSet.range($gt, $not);
 
 	final private static Map<String, Operator> operators = new HashMap<String, Operator>();
 	final private static Map<String, Operator> comparators = new HashMap<String, Operator>();
@@ -70,11 +70,11 @@ public enum Operator {
 	}
 	
 	public static boolean isComparator(Operator o) {
-		return !(o==Operator.$and || o==Operator.$or);
+		return !(o==Operator.$and || o==Operator.$or || o==Operator.$not);
 	}
 
 	public static boolean isJoin(Operator o) {
-		return (o==Operator.$and || o==Operator.$or);
+		return (o==Operator.$and || o==Operator.$or || o==Operator.$not);
 	}
 
 

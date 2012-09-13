@@ -9,8 +9,10 @@ import gk.jfilter.impl.filter.expression.AndFilterExpression;
 import gk.jfilter.impl.filter.expression.ArrayFilterExpression;
 import gk.jfilter.impl.filter.expression.ClassFilterExpression;
 import gk.jfilter.impl.filter.expression.CollectionFilterExpression;
+import gk.jfilter.impl.filter.expression.EmptyFilterExpression;
 import gk.jfilter.impl.filter.expression.FilterExpression;
 import gk.jfilter.impl.filter.expression.MapFilterExpression;
+import gk.jfilter.impl.filter.expression.NotFilterExpression;
 import gk.jfilter.impl.filter.expression.OrFilterExpression;
 import gk.jfilter.impl.filter.expression.SimpleFilterExpression;
 import gk.jfilter.impl.filter.json.JacksonJsonImpl;
@@ -37,13 +39,7 @@ public class FilterParser {
 			Map<String, ?> filterMap = json.toMap(jsonFilter.getBytes());
 			String filterFirstKey = (String) filterMap.keySet().toArray()[0];
 
-			FilterExpression exp = null;
-			if (filterFirstKey.equals(Operator.$or.toString())) {
-				exp = new OrFilterExpression(filterFirstKey, bean);
-			} else {
-				exp = new AndFilterExpression(filterFirstKey, bean);
-			}
-
+			FilterExpression exp = new EmptyFilterExpression(filterFirstKey, bean);
 			parseMap(filterMap, parameters, exp, bean);
 			return exp;
 		} catch (Throwable e) {
@@ -102,7 +98,7 @@ public class FilterParser {
 		/** e.g. {$and:[{a:"v1"}, {b:"v2}]} */
 		if (filterValue instanceof Collection) {
 			if (!Operator.isJoin(filterKey)) {
-				throw new JFilterException(" $and or $or expected. with collection of expressions: " + filterValue+" but was "+filterKey);
+				throw new JFilterException(" $and or $or or $not expected. with collection of expressions: " + filterValue+" but was "+filterKey);
 			}
 			parseCollection(filterKey, (Collection<Map<String, ?>>) filterValue, parameters, exp, bean);
 			return;
@@ -140,6 +136,8 @@ public class FilterParser {
 			nextExp = new AndFilterExpression(filterKey, bean);
 		} else if (operator == Operator.$or) {
 			nextExp = new OrFilterExpression(filterKey, bean);
+		} else if (operator == Operator.$not) {
+			nextExp = new NotFilterExpression(filterKey, bean);
 		} else {
 			throw new JFilterException(" Join operator not supported: " + operator);
 		}
