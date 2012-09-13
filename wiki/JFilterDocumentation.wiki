@@ -74,7 +74,7 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 
 == Supported operators ==
 
-|| *Operator* || *Description* || *Supported types* || *Comment* ||
+|| *Operator* || *Description* || *Supported types* || *Example* ||
 || $gt || Greater than|| All || ||
 || $ge || Greater than equals to || All || ||
 || $lt || Less than || All || ||
@@ -84,9 +84,9 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 || $ew || Same as String endsWith || String || This special operator is provided because JFilter supports methods without any arguments||
 || $cts || Same as String contails|| String || This special operator is provided because JFilter supports methods without any arguments||
 || $in || In || Collection, Array and Map|| ||
-|| $nin || Not in || Collection, Array and Map|| ||
-|| $and || AND || || used for join||
-|| $or || OR || || used for join||
+|| $not || NOT || || "{'$not':[{'type':{'$in':'?type'}}]}"||
+|| $and || AND || || ||
+|| $or || OR || || ||
 
 == Supported data types ==
  All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte,  Calendar, Character, java.util.Date, Float, Integer, Long, Short, String, java.sql.Time, java.sql.Timestamp, URI, UUID
