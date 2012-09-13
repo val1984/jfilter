@@ -41,7 +41,9 @@ public class CollectionTest {
 		cat1.addChild(cat2);
 		cat1.addChild(cat3);
 		cat1.addChild(cat4);
-	
+		
+		cat1.addChild(dog1); //specifically add dog to cat family
+		
 		animals.add(cat1);
 		animals.add(cat2);
 		animals.add(cat3);
@@ -86,6 +88,28 @@ public class CollectionTest {
 		parameters.put("type", "cat");
 
 		List<Animal> fa = filter.filter("{'children.type':'?type'}", parameters).out(new ArrayList<Animal>());
+		assertEquals(1,fa.size());
+	}
+	
+	@Ignore
+	public void testNin() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("type", "cat");
+
+		List<Animal> fa = filter.filter("{'children.type':{'$nin':'?type'}}",     parameters).out(new ArrayList<Animal>());
+		assertEquals(1,fa.size());
+	}
+	
+	@Test
+	public void testIn() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("type", "cat");
+
+		List<Animal> fa = filter.filter("{'children.type':{'$in':'?type'}}",     parameters).out(new ArrayList<Animal>());
 		assertEquals(1,fa.size());
 	}
 	
