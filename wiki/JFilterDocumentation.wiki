@@ -77,7 +77,7 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 || *Operator* || *Description* || *Supported types* || *Example* || *Comment*||
 || $gt || Greater than|| All || "{'length':{'$gt':'?length'}}"|| ||
 || $ge || Greater than equals to || All || "{'length':{'$ge':'?length'}}"|| ||
-|| $lt || Less than || All || || "{'length':{'$lt':'?length'}}"||
+|| $lt || Less than || All || "{'length':{'$lt':'?length'}}" || ||
 || $le || Less than equals to || All || "{'length':{'$le':'?length'}}"|| ||
 || $eq || Equals to || All || "{'name':{'$eq':'?name'}}"|| ||
 || $sw|| Same as String startsWith || String || "{'name':{'$sw':'?name'}}" || This special operator is provided because JFilter supports methods without any arguments ||
