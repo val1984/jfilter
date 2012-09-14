@@ -75,18 +75,18 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 == Supported operators ==
 
 || *Operator* || *Description* || *Supported types* || *Example* || *Comment*||
-|| $gt || Greater than|| All || || ||
-|| $ge || Greater than equals to || All || || ||
-|| $lt || Less than || All || || ||
-|| $le || Less than equals to || All || || ||
-|| $eq || Equals to || All || || ||
-|| $sw|| Same as String startsWith || String || || This special operator is provided because JFilter supports methods without any arguments ||
-|| $ew || Same as String endsWith || String || || This special operator is provided because JFilter supports methods without any arguments ||
-|| $cts || Same as String contails|| String || || This special operator is provided because JFilter supports methods without any arguments ||
-|| $in || In || Collection, Array and Map|| || ||
-|| $not || NOT || || "{'$not':[{'type':{'$in':'?type'}}]}"||
-|| $and || AND || || || join operator ||
-|| $or || OR || || || join operator ||
+|| $gt || Greater than|| All || "{'length':{'$gt':'?length'}}"|| ||
+|| $ge || Greater than equals to || All || "{'length':{'$ge':'?length'}}"|| ||
+|| $lt || Less than || All || || "{'length':{'$lt':'?length'}}"||
+|| $le || Less than equals to || All || "{'length':{'$le':'?length'}}"|| ||
+|| $eq || Equals to || All || "{'name':{'$eq':'?name'}}"|| ||
+|| $sw|| Same as String startsWith || String || "{'name':{'$sw':'?name'}}" || This special operator is provided because JFilter supports methods without any arguments ||
+|| $ew || Same as String endsWith || String || "{'name':{'$ew':'?name'}}" || This special operator is provided because JFilter supports methods without any arguments ||
+|| $cts || Same as String contails|| String || "{'name':{'$cts':'?name'}}" || This special operator is provided because JFilter supports methods without any arguments ||
+|| $in || In || Collection, Array and Map|| "{'type':{'$in':'?type'}}"|| ||
+|| $not || NOT || || "{'$not':[{'type':{'$in':'?type'}}]}"|| ||
+|| $and || AND || || "{'$and':[{'type':{'$in':'?type'}}, {'color':{'$in':'?type'}}]}"|| join operator ||
+|| $or || OR || || "{'$or':[{'type':{'$in':'?type'}}, {'color':{'$in':'?type'}}]}"|| join operator ||
 
 == Supported data types ==
  All primitives, `BigDecimal`, `BigInteger`, Boolean, Byte,  Calendar, Character, java.util.Date, Float, Integer, Long, Short, String, java.sql.Time, java.sql.Timestamp, URI, UUID
