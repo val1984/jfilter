@@ -1,4 +1,4 @@
-package gk.jfilter.test.operator;
+package gk.jfilter.test;
 
 import static org.junit.Assert.assertEquals;
 import gk.jfilter.JFilter;

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class Random {
@@ -22,13 +23,16 @@ public class Random {
 		Animal dog1 = new Dog("dog1", 4, "black");
 		Animal dog2 = new Dog("dog2", 4, "white");
 		Animal dog3 = new Dog("dog3", 4, "black");
+		Animal dog4 = new Dog("dog4", 4, null);
 		
 		dog1.addChild(dog2);
 		dog1.addChild(dog3);
+		dog1.addChild(dog4);
 				
 		animals.add(dog1);
 		animals.add(dog2);
 		animals.add(dog3);
+		animals.add(dog4);
 		
 		// add cat family
 		Animal cat1 = new Cat("cat1", 4, "white");
@@ -45,20 +49,31 @@ public class Random {
 		animals.add(cat3);
 		animals.add(cat4);
 	}
-
+	
+	@Test
+	public void testNull() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		assertEquals(1,filter.filter("{'color':'?1'}", (String)null).out(new ArrayList<Animal>()).size());
+	}
+	
 	@Test
 	public void testMother() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
-		assertEquals(2,filter.filter("{'mother.color':'?1'}", "black").out(new ArrayList<Animal>()).size());
+		assertEquals(3,filter.filter("{'mother.color':'?1'}", "black").out(new ArrayList<Animal>()).size());
 		assertEquals(3,filter.filter("{'mother.color':'?1'}", "white").out(new ArrayList<Animal>()).size());
 	}
 	
 	@Test
 	public void testNot() {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
-		assertEquals(4,filter.filter("{'$not':[{'mother.color':'?1'}]}", "white").out(new ArrayList<Animal>()).size());
+		assertEquals(5,filter.filter("{'$not':[{'mother.color':'?1'}]}", "white").out(new ArrayList<Animal>()).size());
 		assertEquals(5,filter.filter("{'$not':[{'mother.color':'?1'}]}", "black").out(new ArrayList<Animal>()).size());
 	}
 	
+	@Test
+	public void testNull2() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		assertEquals(4,filter.filter("{'mother.color':'?1'}", (String)null).out(new ArrayList<Animal>()).size());
+	}
 }
