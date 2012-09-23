@@ -2,15 +2,14 @@ package gk.jfilter.test;
 
 import static org.junit.Assert.assertEquals;
 import gk.jfilter.JFilter;
-import gk.jfilter.test.common.model.Animal;
-import gk.jfilter.test.common.model.Cat;
-import gk.jfilter.test.common.model.Dog;
+import gk.jfilter.test.model.Animal;
+import gk.jfilter.test.model.Cat;
+import gk.jfilter.test.model.Dog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class Random {
