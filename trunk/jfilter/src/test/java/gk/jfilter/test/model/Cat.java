@@ -1,4 +1,4 @@
-package gk.jfilter.test.common.model;
+package gk.jfilter.test.model;
 
 
 

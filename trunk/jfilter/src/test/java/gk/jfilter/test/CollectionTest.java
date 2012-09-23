@@ -2,9 +2,9 @@ package gk.jfilter.test;
 
 import static org.junit.Assert.assertEquals;
 import gk.jfilter.JFilter;
-import gk.jfilter.test.common.model.Animal;
-import gk.jfilter.test.common.model.Cat;
-import gk.jfilter.test.common.model.Dog;
+import gk.jfilter.test.model.Animal;
+import gk.jfilter.test.model.Cat;
+import gk.jfilter.test.model.Dog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,7 +129,7 @@ public class CollectionTest {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("class", "gk.jfilter.test.common.model.Cat");
+		parameters.put("class", "gk.jfilter.test.model.Cat");
 		
 		List<Animal> fa = filter.filter("{'class.name':'?class'}", parameters).out(new ArrayList<Animal>());
 		assertEquals(4,fa.size());
@@ -140,7 +140,7 @@ public class CollectionTest {
 		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("class", "gk.jfilter.test.common.model.Cat");
+		parameters.put("class", "gk.jfilter.test.model.Cat");
 		
 		List<Animal> fa = filter.filter("{'class.name.toString':'?class'}", parameters).out(new ArrayList<Animal>());
 		assertEquals(4,fa.size());
