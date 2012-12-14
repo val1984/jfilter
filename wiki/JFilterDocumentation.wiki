@@ -40,7 +40,7 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 }}}
 
 == Sample programs ==
- * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/simple/Simple.java Simple sample]
+ * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/Simple.java Simple sample]
 
  * [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/sample/product Product sample]
 
