@@ -19,8 +19,8 @@ public class StringOperatorTest {
 		animals.add(new Dog("dog1", 4, "black"));
 		animals.add(new Cat("cat1", 4, "black"));
 		
-		animals.add(new Dog("dog2", 4, "white"));
-		animals.add(new Cat("cat2", 4, "white"));
+		animals.add(new Dog("dog2", 1, "white"));
+		animals.add(new Cat("cat2", 3, "white"));
 	}
 	
 	@Test
@@ -95,5 +95,20 @@ public class StringOperatorTest {
 		assertEquals(2,fa.size());
 	}
 	
+	@Test
+	public void testBetween() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		
+		List<Animal> fa = filter.filter("{'$and':[{'name.length':{'$gt':'?1'}}, {'name.length':{'$lt':'?2'}}]}",4,10).out(new ArrayList<Animal>());
+		assertEquals(0,fa.size());
+	}
+	
+	@Test
+	public void testBetween2() {
+		JFilter<Animal> filter = new JFilter<Animal>(animals, Animal.class);
+		
+		List<Animal> fa = filter.filter("{'$and':[{'legs':{'$ge':'?1'}}, {'legs':{'$le':'?2'}}]}",2,4).out(new ArrayList<Animal>());
+		assertEquals(3,fa.size());
+	}
 }
 
