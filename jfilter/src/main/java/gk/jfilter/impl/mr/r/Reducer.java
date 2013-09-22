@@ -31,22 +31,20 @@ public class Reducer {
 	}
 
 	public static <T extends Number> T sum(Iterable<T> iterable) {
-		Number sum = 0;
+		Number sum = null;
 		for (T n : iterable) {
 			if (n instanceof Integer) {
 				sum = (Integer) sum + (Integer) n;
 			} else if (n instanceof Long) {
-				sum = (Long) sum + (Long) n;
-			} else if (n instanceof Long) {
-				sum = (Long) sum + (Long) n;
+				sum = sum==null?new Long(0): (Long)sum + (Long)n;
 			} else if (n instanceof Float) {
-				sum = (Float) sum + (Float) n;
+				sum = sum==null?new Float(0):(Float) sum + (Float) n;
 			} else if (n instanceof Double) {
-				sum = (Double) sum + (Double) n;
+				sum = sum==null?new Double(0):(Double) sum + (Double) n;
 			} else if (n instanceof BigInteger) {
-				sum = ((BigInteger) sum).add((BigInteger) n);
+				sum = sum==null?new BigInteger("0"):((BigInteger) sum).add((BigInteger) n);
 			} else if (n instanceof BigDecimal) {
-				sum = ((BigDecimal) sum).add((BigDecimal) n);
+				sum = sum==null?new BigDecimal(0):((BigDecimal) sum).add((BigDecimal) n);
 			}
 		}
 
