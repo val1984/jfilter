@@ -93,7 +93,7 @@ Collection<Pet> dogs = jfilter.filter("{'type':'?type'}", parameters).out(new Ar
 
 == How to use different data types ==
 
-See the code of  [http://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/test/datatype/DataTypesTest.java Data type test program]
+See the code of  [https://code.google.com/p/jfilter/source/browse/trunk/jfilter/src/test/java/gk/jfilter/test/DataTypesTest.java Data type test program]
 == Parameterized filters ==
 
 Parameterized filters are when you do not provide attributes value in json filter string for example {'id':'?id'}. Question mark is used to indicate that value will be given as argument of {{{JFilter.execute}}} method. There are two type of parameterized filters:
